@@ -334,9 +334,8 @@ class IcebergIngestion:
             execution_date: Data de execução
 
         Returns:
-            Lista de tuplas (sufixo_tabela, DataFrame) ou None.
-            O sufixo é usado para compor o nome final da tabela filha.
-            Ex: ("_aclgrants", df) → tabela alerts_riskfindings_aclgrants
+            Lista de tuplas (chave_original, sufixo_tabela, DataFrame) ou None.
+            Ex: ("AclGrants", "_aclgrants", df) → tabela alerts_riskfindings_aclgrants
         """
         try:
             path_parts = map_col_name.split('.')
@@ -414,31 +413,14 @@ class IcebergIngestion:
 
                 final_df = cls.fix_nested_duplicate_names(final_df)
                 final_df = final_df.withColumn("_trusted_ingested_at", F.current_timestamp())
-                results.append((suffix, final_df))
+                results.append((key, suffix, final_df))
 
             return results if results else None
 
         except Exception as e:
             logger.warning(f"Erro ao extrair MAP {map_col_name}: {e}")
             logger.debug(traceback.format_exc())
-            # Fallback: retorna o map como key/value simples
-            try:
-                if len(map_col_name.split('.')) > 1:
-                    parent_struct = map_col_name.split('.')[0]
-                    map_field = map_col_name.split('.')[-1]
-                    col_ref = F.col(f"`{parent_struct}`.`{map_field}`")
-                else:
-                    col_ref = F.col(f"`{map_col_name}`")
-
-                fallback_df = df.select(
-                    F.col(f"`{root_id_col}`").alias(f"{root_id_col.lower()}"),
-                    F.explode_outer(col_ref).alias("map_key", "map_value")
-                ).filter(F.col("map_value").isNotNull())
-
-                fallback_df = fallback_df.withColumn("_trusted_ingested_at", F.current_timestamp())
-                return [("", fallback_df)]
-            except Exception:
-                return None
+            return None
 
     # =========================================================================
     # REMOÇÃO DE CAMPOS EXTRAÍDOS DO DATAFRAME PRINCIPAL
@@ -476,8 +458,13 @@ class IcebergIngestion:
         for field in df.schema.fields:
             if field.name in fields_to_remove:
                 if fields_to_remove[field.name] is None:
-                    logger.info(f"  Removendo coluna: {field.name}")
-                    continue
+                    if isinstance(field.dataType, MapType):
+                        # MAP: mantém a coluna — chaves de array extraídas são filtradas
+                        # em run_ingestion via _filter_map_column; escalares permanecem
+                        select_exprs.append(F.col(f"`{field.name}`"))
+                    else:
+                        logger.info(f"  Removendo coluna: {field.name}")
+                        continue
                 elif isinstance(field.dataType, StructType):
                     children_to_remove = set(fields_to_remove[field.name])
                     struct_fields = []
@@ -491,13 +478,55 @@ class IcebergIngestion:
                     else:
                         logger.info(f"  Struct '{field.name}' vazio após remoção → removido")
                 else:
-                    # MAP no nível raiz → remove
-                    logger.info(f"  Removendo coluna MAP: {field.name}")
+                    logger.info(f"  Removendo coluna: {field.name}")
                     continue
             else:
                 select_exprs.append(F.col(f"`{field.name}`"))
 
         return df.select(*select_exprs)
+
+    # =========================================================================
+    # DESCOBERTA E FILTRAGEM DE CHAVES MAP
+    # =========================================================================
+
+    @classmethod
+    def _discover_map_array_keys(cls, df: DataFrame, map_col_name: str) -> List[str]:
+        """
+        Retorna as chaves distintas de um MAP<STRING,STRING> cujos valores são
+        JSON arrays (começam com '[').  Usado para saber quais chaves serão
+        extraídas como subtabelas antes de construir o df_main.
+        """
+        try:
+            path_parts = map_col_name.split('.')
+            col_ref = (
+                F.col(f"`{path_parts[0]}`.`{path_parts[-1]}`")
+                if len(path_parts) > 1
+                else F.col(f"`{map_col_name}`")
+            )
+            array_keys = (
+                df.select(F.explode_outer(col_ref).alias("_k", "_v"))
+                .filter(F.col("_v").isNotNull() & F.trim(F.col("_v")).startswith("["))
+                .select("_k")
+                .distinct()
+                .collect()
+            )
+            return [r["_k"] for r in array_keys]
+        except Exception as e:
+            logger.warning(f"Erro ao descobrir chaves array no MAP '{map_col_name}': {e}")
+            return []
+
+    @staticmethod
+    def _filter_map_column(df: DataFrame, map_col: str, keys_to_remove: List[str]) -> DataFrame:
+        """
+        Remove chaves específicas de um MAP<STRING,STRING>, mantendo todas as
+        demais (escalares).  Usa map_filter disponível no Spark 3.0+.
+        """
+        if not keys_to_remove:
+            return df
+        return df.withColumn(
+            map_col,
+            F.map_filter(F.col(f"`{map_col}`"), lambda k, v: ~k.isin(keys_to_remove))
+        )
 
     # =========================================================================
     # SINCRONIZAÇÃO DE SCHEMA
@@ -753,12 +782,34 @@ class IcebergIngestion:
             for path, tname, _ in nested_tables_info:
                 logger.info(f"  {path} → {tname}")
 
+        # Pré-descoberta: identifica quais chaves de cada MAP virarão subtabelas.
+        # Necessário para filtrar o MAP no df_main antes de escrevê-lo.
+        map_keys_to_filter: Dict[str, List[str]] = {}
+        for nested_path, _, _ in nested_tables_info:
+            col_name = nested_path.split('.')[0]
+            field_obj = next(
+                (f for f in df_raw.schema.fields if f.name == col_name), None
+            )
+            if field_obj and isinstance(field_obj.dataType, MapType):
+                if col_name not in map_keys_to_filter:
+                    logger.info(f"  Descobrindo chaves array no MAP '{col_name}'...")
+                    keys = cls._discover_map_array_keys(df_raw, col_name)
+                    map_keys_to_filter[col_name] = keys
+                    logger.info(f"  MAP '{col_name}': {len(keys)} chave(s) com array encontrada(s)")
+
         # =====================================================================
         # ETAPA 4: Criar/atualizar tabela principal
         # =====================================================================
         logger.info("\nETAPA 4: Criar/atualizar tabela principal")
 
         df_main = cls._remove_nested_fields(df_raw, nested_tables_info)
+
+        # Filtra chaves extraídas de cada MAP, mantendo os valores escalares
+        for map_col, keys in map_keys_to_filter.items():
+            if keys:
+                df_main = cls._filter_map_column(df_main, map_col, keys)
+                logger.info(f"  MAP '{map_col}': {len(keys)} chave(s) de array removida(s) — escalares mantidos")
+
         logger.info(f"Tabela principal: {main_table_identifier}")
         logger.info(f"Colunas: {len(df_main.columns)}")
 
@@ -831,7 +882,7 @@ class IcebergIngestion:
                         logger.warning(f"Nenhum dado para {nested_path}")
                         continue
 
-                    for suffix, sub_df in map_results:
+                    for original_key, suffix, sub_df in map_results:
                         sub_table_name = f"{child_table_name}{suffix}"
                         sub_table_identifier = f"{catalog}.{database}.{sub_table_name}"
                         logger.info(f"Registros extraídos: {sub_df.count()} → {sub_table_name}")
