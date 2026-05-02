@@ -1,0 +1,320 @@
+TRUSTED ICEBERG WRITER
+ExecuteDate: 2026-04-27
+============================================================
+
+ETAPA 1: Buscar dados da tabela RAW
+Tabela fonte: orca_raw.alert | Partição: execution_date
+Query: 
+                SELECT *
+                FROM glue_catalog.orca_raw.alert
+                WHERE DATE(execution_date) = '2026-04-27'
+            
+Registros lidos da tabela orca_raw.alert para 2026-04-27: 131463
+Registros: 131463 | Colunas: 23
+
+ETAPA 2: Tratar conflitos de nomes
+
+ETAPA 3: Identificar estruturas para normalização
+------------------------------------------------------------
+Detectado Array<Struct>: Inventories.value → alerts_inventories_value
+Detectado MapType: RiskFindings → alerts_riskfindings (parse em runtime)
+2 tabela(s) filha(s) identificada(s):
+  Inventories.value → alerts_inventories_value
+  RiskFindings → alerts_riskfindings
+
+ETAPA 4: Criar/atualizar tabela principal
+Removendo campos extraídos: {'Inventories': ['value'], 'RiskFindings': None}
+  Removendo coluna: RiskFindings
+Tabela principal: glue_catalog.orca_trusted.alerts
+Colunas: 23
+Criando tabela glue_catalog.orca_trusted.alerts
+Particionamento: ['execution_date']
+Tabela glue_catalog.orca_trusted.alerts criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts
+
+ETAPA 5: Criar/atualizar tabelas filhas
+Coluna ID raiz: AlertId
+
+Processando: Inventories.value → alerts_inventories_value
+Registros extraídos: 165867
+Criando tabela glue_catalog.orca_trusted.alerts_inventories_value
+Tabela glue_catalog.orca_trusted.alerts_inventories_value criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_inventories_value
+
+Processando: RiskFindings → alerts_riskfindings
+MAP 'RiskFindings' chave 'SensitiveFiles' contém JSON array → sub-tabela com sufixo '_sensitivefiles'
+MAP 'RiskFindings' chave 'IamGroups' contém JSON array → sub-tabela com sufixo '_iamgroups'
+  Chave 'IamGroups': não foi possível inferir schema, ignorando
+MAP 'RiskFindings' chave 'CrossAccountFindings' contém JSON array → sub-tabela com sufixo '_crossaccountfindings'
+  Chave 'CrossAccountFindings': array vazio após parse, ignorando
+MAP 'RiskFindings' chave 'OriginSslProtocols' contém JSON array → sub-tabela com sufixo '_originsslprotocols'
+  Chave 'OriginSslProtocols': array vazio após parse, ignorando
+MAP 'RiskFindings' chave 'SecurityGroups' contém JSON array → sub-tabela com sufixo '_securitygroups'
+MAP 'RiskFindings' chave 'UnknownSharedCloudAccounts' contém JSON array → sub-tabela com sufixo '_unknownsharedcloudaccounts'
+  Chave 'UnknownSharedCloudAccounts': array vazio após parse, ignorando
+MAP 'RiskFindings' chave 'SnsSubscriptions' contém JSON array → sub-tabela com sufixo '_snssubscriptions'
+MAP 'RiskFindings' chave 'Description' contém JSON array → sub-tabela com sufixo '_description'
+  Chave 'Description': array vazio após parse, ignorando
+MAP 'RiskFindings' chave 'NetworkInterfaces' contém JSON array → sub-tabela com sufixo '_networkinterfaces'
+MAP 'RiskFindings' chave 'Pua' contém JSON array → sub-tabela com sufixo '_pua'
+MAP 'RiskFindings' chave 'AclGrants' contém JSON array → sub-tabela com sufixo '_aclgrants'
+  Renomeado nested: 'Id' → 'id_'
+MAP 'RiskFindings' chave 'threat' contém JSON array → sub-tabela com sufixo '_threat'
+  Chave 'threat': array vazio após parse, ignorando
+MAP 'RiskFindings' chave 'Stages' contém JSON array → sub-tabela com sufixo '_stages'
+MAP 'RiskFindings' chave 'EntitySources' contém JSON array → sub-tabela com sufixo '_entitysources'
+MAP 'RiskFindings' chave 'RunningServices' contém JSON array → sub-tabela com sufixo '_runningservices'
+MAP 'RiskFindings' chave 'NetworkAclRules' contém JSON array → sub-tabela com sufixo '_networkaclrules'
+MAP 'RiskFindings' chave 'VpcList' contém JSON array → sub-tabela com sufixo '_vpclist'
+MAP 'RiskFindings' chave 'Ec2Instances' contém JSON array → sub-tabela com sufixo '_ec2instances'
+MAP 'RiskFindings' chave 'Ec2EbsSnapshots' contém JSON array → sub-tabela com sufixo '_ec2ebssnapshots'
+MAP 'RiskFindings' chave 'OriginProtocolPolicies' contém JSON array → sub-tabela com sufixo '_originprotocolpolicies'
+  Chave 'OriginProtocolPolicies': array vazio após parse, ignorando
+MAP 'RiskFindings' chave 'Roles' contém JSON array → sub-tabela com sufixo '_roles'
+MAP 'RiskFindings' chave 'public_keys' contém JSON array → sub-tabela com sufixo '_public_keys'
+MAP 'RiskFindings' chave 'DependencyPackages' contém JSON array → sub-tabela com sufixo '_dependencypackages'
+MAP 'RiskFindings' chave 'Attachments' contém JSON array → sub-tabela com sufixo '_attachments'
+MAP 'RiskFindings' chave 'match' contém JSON array → sub-tabela com sufixo '_match'
+  Chave 'match': array vazio após parse, ignorando
+MAP 'RiskFindings' chave 'top_cves' contém JSON array → sub-tabela com sufixo '_top_cves'
+MAP 'RiskFindings' chave 'AwsCloudTrail' contém JSON array → sub-tabela com sufixo '_awscloudtrail'
+MAP 'RiskFindings' chave 'PermissiveActions' contém JSON array → sub-tabela com sufixo '_permissiveactions'
+  Chave 'PermissiveActions': array vazio após parse, ignorando
+MAP 'RiskFindings' chave 'Mounts' contém JSON array → sub-tabela com sufixo '_mounts'
+  Chave 'Mounts': array vazio após parse, ignorando
+MAP 'RiskFindings' chave 'Policies' contém JSON array → sub-tabela com sufixo '_policies'
+MAP 'RiskFindings' chave 'tags' contém JSON array → sub-tabela com sufixo '_tags'
+  Chave 'tags': array vazio após parse, ignorando
+MAP 'RiskFindings' chave 'LinuxOsPasswords' contém JSON array → sub-tabela com sufixo '_linuxospasswords'
+MAP 'RiskFindings' chave 'ResourceRecordSets' contém JSON array → sub-tabela com sufixo '_resourcerecordsets'
+MAP 'RiskFindings' chave 'AwsIamPasswordPolicy' contém JSON array → sub-tabela com sufixo '_awsiampasswordpolicy'
+MAP 'RiskFindings' chave 'EC2Instances' contém JSON array → sub-tabela com sufixo '_ec2instances'
+MAP 'RiskFindings' chave 'description_urls' contém JSON array → sub-tabela com sufixo '_description_urls'
+  Chave 'description_urls': array vazio após parse, ignorando
+MAP 'RiskFindings' chave 'data' contém JSON array → sub-tabela com sufixo '_data'
+MAP 'RiskFindings' chave 'Listeners' contém JSON array → sub-tabela com sufixo '_listeners'
+MAP 'RiskFindings' chave 'TargetGroups' contém JSON array → sub-tabela com sufixo '_targetgroups'
+MAP 'RiskFindings' chave 'owasp' contém JSON array → sub-tabela com sufixo '_owasp'
+  Chave 'owasp': array vazio após parse, ignorando
+MAP 'RiskFindings' chave 'DataLakeResources' contém JSON array → sub-tabela com sufixo '_datalakeresources'
+MAP 'RiskFindings' chave 'code_owners' contém JSON array → sub-tabela com sufixo '_code_owners'
+  Chave 'code_owners': array vazio após parse, ignorando
+MAP 'RiskFindings' chave 'UnknownPermittedCloudAccounts' contém JSON array → sub-tabela com sufixo '_unknownpermittedcloudaccounts'
+  Chave 'UnknownPermittedCloudAccounts': array vazio após parse, ignorando
+MAP 'RiskFindings' chave 'VpcSecurityGroups' contém JSON array → sub-tabela com sufixo '_vpcsecuritygroups'
+MAP 'RiskFindings' chave 'SensitiveDbEntries' contém JSON array → sub-tabela com sufixo '_sensitivedbentries'
+MAP 'RiskFindings' chave 'LifecycleConfiguration' contém JSON array → sub-tabela com sufixo '_lifecycleconfiguration'
+MAP 'RiskFindings' chave 'languages' contém JSON array → sub-tabela com sufixo '_languages'
+  Chave 'languages': array vazio após parse, ignorando
+MAP 'RiskFindings' chave 'HTTPOperations' contém JSON array → sub-tabela com sufixo '_httpoperations'
+MAP 'RiskFindings' chave 'SgIpPermissions' contém JSON array → sub-tabela com sufixo '_sgippermissions'
+MAP 'RiskFindings' chave 'GuardDutyFindings' contém JSON array → sub-tabela com sufixo '_guarddutyfindings'
+MAP 'RiskFindings' chave 'ParameterGroups' contém JSON array → sub-tabela com sufixo '_parametergroups'
+MAP 'RiskFindings' chave 'WindowsOsPasswords' contém JSON array → sub-tabela com sufixo '_windowsospasswords'
+  Chave 'WindowsOsPasswords': não foi possível inferir schema, ignorando
+MAP 'RiskFindings' chave 'ExternalPorts' contém JSON array → sub-tabela com sufixo '_externalports'
+MAP 'RiskFindings' chave 'CloudFrontOriginAccessControls' contém JSON array → sub-tabela com sufixo '_cloudfrontoriginaccesscontrols'
+  Chave 'CloudFrontOriginAccessControls': não foi possível inferir schema, ignorando
+MAP 'RiskFindings' chave 'Ec2EbsVolumes' contém JSON array → sub-tabela com sufixo '_ec2ebsvolumes'
+MAP 'RiskFindings' chave 'cwe' contém JSON array → sub-tabela com sufixo '_cwe'
+  Chave 'cwe': array vazio após parse, ignorando
+MAP 'RiskFindings' chave 'PermittedCloudAccounts' contém JSON array → sub-tabela com sufixo '_permittedcloudaccounts'
+  Chave 'PermittedCloudAccounts': array vazio após parse, ignorando
+MAP 'RiskFindings' chave 'SensitiveData' contém JSON array → sub-tabela com sufixo '_sensitivedata'
+MAP 'RiskFindings' chave 'AwsUser' contém JSON array → sub-tabela com sufixo '_awsuser'
+MAP 'RiskFindings' chave 'Compatibilities' contém JSON array → sub-tabela com sufixo '_compatibilities'
+  Chave 'Compatibilities': array vazio após parse, ignorando
+MAP 'RiskFindings' chave 'EventSelectors' contém JSON array → sub-tabela com sufixo '_eventselectors'
+  Chave 'EventSelectors': não foi possível inferir schema, ignorando
+MAP 'RiskFindings' chave 'SSHConfigurationFiles' contém JSON array → sub-tabela com sufixo '_sshconfigurationfiles'
+MAP 'RiskFindings' chave 'ShellHistorySuspiciousCommands' contém JSON array → sub-tabela com sufixo '_shellhistorysuspiciouscommands'
+MAP 'RiskFindings' chave 'PublicCacheBehaviors' contém JSON array → sub-tabela com sufixo '_publiccachebehaviors'
+  Chave 'PublicCacheBehaviors': array vazio após parse, ignorando
+MAP 'RiskFindings' chave 'code_snippet' contém JSON array → sub-tabela com sufixo '_code_snippet'
+MAP 'RiskFindings' chave 'OriginAccessIdentities' contém JSON array → sub-tabela com sufixo '_originaccessidentities'
+  Chave 'OriginAccessIdentities': array vazio após parse, ignorando
+MAP 'RiskFindings' chave 'expected_value' contém JSON array → sub-tabela com sufixo '_expected_value'
+  Chave 'expected_value': array vazio após parse, ignorando
+MAP 'RiskFindings' chave 'InstanceProfileArnList' contém JSON array → sub-tabela com sufixo '_instanceprofilearnlist'
+  Chave 'InstanceProfileArnList': array vazio após parse, ignorando
+MAP 'RiskFindings' chave 'SharedCloudAccounts' contém JSON array → sub-tabela com sufixo '_sharedcloudaccounts'
+  Chave 'SharedCloudAccounts': array vazio após parse, ignorando
+Registros extraídos: 2259 → alerts_riskfindings_sensitivefiles
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_sensitivefiles
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_sensitivefiles criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_sensitivefiles
+Registros extraídos: 154 → alerts_riskfindings_securitygroups
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_securitygroups
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_securitygroups criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_securitygroups
+Registros extraídos: 1 → alerts_riskfindings_snssubscriptions
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_snssubscriptions
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_snssubscriptions criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_snssubscriptions
+Registros extraídos: 5 → alerts_riskfindings_networkinterfaces
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_networkinterfaces
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_networkinterfaces criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_networkinterfaces
+Registros extraídos: 1 → alerts_riskfindings_pua
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_pua
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_pua criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_pua
+Registros extraídos: 499 → alerts_riskfindings_aclgrants
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_aclgrants
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_aclgrants criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_aclgrants
+Registros extraídos: 92 → alerts_riskfindings_stages
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_stages
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_stages criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_stages
+Registros extraídos: 250 → alerts_riskfindings_entitysources
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_entitysources
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_entitysources criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_entitysources
+Registros extraídos: 6 → alerts_riskfindings_runningservices
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_runningservices
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_runningservices criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_runningservices
+Registros extraídos: 521 → alerts_riskfindings_networkaclrules
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_networkaclrules
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_networkaclrules criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_networkaclrules
+Registros extraídos: 10 → alerts_riskfindings_vpclist
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_vpclist
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_vpclist criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_vpclist
+Registros extraídos: 277 → alerts_riskfindings_ec2instances
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_ec2instances
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_ec2instances criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_ec2instances
+Registros extraídos: 65 → alerts_riskfindings_ec2ebssnapshots
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_ec2ebssnapshots
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_ec2ebssnapshots criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_ec2ebssnapshots
+Registros extraídos: 14 → alerts_riskfindings_roles
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_roles
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_roles criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_roles
+Registros extraídos: 11 → alerts_riskfindings_public_keys
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_public_keys
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_public_keys criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_public_keys
+Registros extraídos: 1299 → alerts_riskfindings_dependencypackages
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_dependencypackages
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_dependencypackages criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_dependencypackages
+Registros extraídos: 80 → alerts_riskfindings_attachments
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_attachments
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_attachments criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_attachments
+Registros extraídos: 11926 → alerts_riskfindings_top_cves
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_top_cves
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_top_cves criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_top_cves
+Registros extraídos: 13 → alerts_riskfindings_awscloudtrail
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_awscloudtrail
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_awscloudtrail criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_awscloudtrail
+Registros extraídos: 3500 → alerts_riskfindings_policies
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_policies
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_policies criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_policies
+Registros extraídos: 3 → alerts_riskfindings_linuxospasswords
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_linuxospasswords
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_linuxospasswords criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_linuxospasswords
+Registros extraídos: 2 → alerts_riskfindings_resourcerecordsets
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_resourcerecordsets
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_resourcerecordsets criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_resourcerecordsets
+Registros extraídos: 19 → alerts_riskfindings_awsiampasswordpolicy
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_awsiampasswordpolicy
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_awsiampasswordpolicy criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_awsiampasswordpolicy
+Registros extraídos: 3 → alerts_riskfindings_ec2instances
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_ec2instances existe — sincronizando schema
+Schema de glue_catalog.orca_trusted.alerts_riskfindings_ec2instances já sincronizado
+DataFrame alinhado: 9 colunas
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_ec2instances
+Registros extraídos: 6626 → alerts_riskfindings_data
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_data
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_data criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_data
+Registros extraídos: 202 → alerts_riskfindings_listeners
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_listeners
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_listeners criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_listeners
+Registros extraídos: 37 → alerts_riskfindings_targetgroups
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_targetgroups
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_targetgroups criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_targetgroups
+Registros extraídos: 3 → alerts_riskfindings_datalakeresources
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_datalakeresources
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_datalakeresources criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_datalakeresources
+Registros extraídos: 1 → alerts_riskfindings_vpcsecuritygroups
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_vpcsecuritygroups
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_vpcsecuritygroups criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_vpcsecuritygroups
+Registros extraídos: 104 → alerts_riskfindings_sensitivedbentries
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_sensitivedbentries
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_sensitivedbentries criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_sensitivedbentries
+Registros extraídos: 582 → alerts_riskfindings_lifecycleconfiguration
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_lifecycleconfiguration
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_lifecycleconfiguration criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_lifecycleconfiguration
+Registros extraídos: 125 → alerts_riskfindings_httpoperations
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_httpoperations
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_httpoperations criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_httpoperations
+Registros extraídos: 3218 → alerts_riskfindings_sgippermissions
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_sgippermissions
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_sgippermissions criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_sgippermissions
+Registros extraídos: 62 → alerts_riskfindings_guarddutyfindings
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_guarddutyfindings
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_guarddutyfindings criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_guarddutyfindings
+Registros extraídos: 95 → alerts_riskfindings_parametergroups
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_parametergroups
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_parametergroups criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_parametergroups
+Registros extraídos: 142 → alerts_riskfindings_externalports
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_externalports
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_externalports criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_externalports
+Registros extraídos: 12 → alerts_riskfindings_ec2ebsvolumes
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_ec2ebsvolumes
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_ec2ebsvolumes criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_ec2ebsvolumes
+Registros extraídos: 487 → alerts_riskfindings_sensitivedata
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_sensitivedata
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_sensitivedata criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_sensitivedata
+Registros extraídos: 15 → alerts_riskfindings_awsuser
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_awsuser
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_awsuser criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_awsuser
+Registros extraídos: 9 → alerts_riskfindings_sshconfigurationfiles
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_sshconfigurationfiles
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_sshconfigurationfiles criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_sshconfigurationfiles
+Registros extraídos: 2 → alerts_riskfindings_shellhistorysuspiciouscommands
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_shellhistorysuspiciouscommands
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_shellhistorysuspiciouscommands criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_shellhistorysuspiciouscommands
+Registros extraídos: 546311 → alerts_riskfindings_code_snippet
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_code_snippet
+Tabela glue_catalog.orca_trusted.alerts_riskfindings_code_snippet criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_code_snippet
+Registros extraídos: 1256291 → alerts_riskfindings
+Criando tabela glue_catalog.orca_trusted.alerts_riskfindings
+Tabela glue_catalog.orca_trusted.alerts_riskfindings criada com sucesso
+Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings
+
+Todas as tabelas filhas processadas
+============================================================
+TRUSTED carregada: glue_catalog.orca_trusted.alerts
+============================================================
+Job finalizado com sucesso.

@@ -1,0 +1,209 @@
+[
+  {
+    "Name": "alertid",
+    "Type": "string",
+    "Parameters": {
+      "iceberg.field.current": "true",
+      "iceberg.field.id": "1",
+      "iceberg.field.optional": "true"
+    }
+  },
+  {
+    "Name": "alerttype",
+    "Type": "string",
+    "Parameters": {
+      "iceberg.field.current": "true",
+      "iceberg.field.id": "2",
+      "iceberg.field.optional": "true"
+    }
+  },
+  {
+    "Name": "category",
+    "Type": "string",
+    "Parameters": {
+      "iceberg.field.current": "true",
+      "iceberg.field.id": "3",
+      "iceberg.field.optional": "true"
+    }
+  },
+  {
+    "Name": "cloudaccount",
+    "Type": "struct<Name:string>",
+    "Parameters": {
+      "iceberg.field.current": "true",
+      "iceberg.field.id": "4",
+      "iceberg.field.optional": "true"
+    }
+  },
+  {
+    "Name": "createdat",
+    "Type": "string",
+    "Parameters": {
+      "iceberg.field.current": "true",
+      "iceberg.field.id": "5",
+      "iceberg.field.optional": "true"
+    }
+  },
+  {
+    "Name": "cveexploitavailable",
+    "Type": "boolean",
+    "Parameters": {
+      "iceberg.field.current": "true",
+      "iceberg.field.id": "6",
+      "iceberg.field.optional": "true"
+    }
+  },
+  {
+    "Name": "cvefixavailable",
+    "Type": "boolean",
+    "Parameters": {
+      "iceberg.field.current": "true",
+      "iceberg.field.id": "7",
+      "iceberg.field.optional": "true"
+    }
+  },
+  {
+    "Name": "cveids",
+    "Type": "array<string>",
+    "Parameters": {
+      "iceberg.field.current": "true",
+      "iceberg.field.id": "8",
+      "iceberg.field.optional": "true"
+    }
+  },
+  {
+    "Name": "cveopen",
+    "Type": "string",
+    "Parameters": {
+      "iceberg.field.current": "true",
+      "iceberg.field.id": "9",
+      "iceberg.field.optional": "true"
+    }
+  },
+  {
+    "Name": "cveresolved",
+    "Type": "string",
+    "Parameters": {
+      "iceberg.field.current": "true",
+      "iceberg.field.id": "10",
+      "iceberg.field.optional": "true"
+    }
+  },
+  {
+    "Name": "inventories",
+    "Type": "struct<count:bigint,value:array<struct<OrcaScore:double,RiskLevel:string>>>",
+    "Parameters": {
+      "iceberg.field.current": "true",
+      "iceberg.field.id": "11",
+      "iceberg.field.optional": "true"
+    }
+  },
+  {
+    "Name": "inventory",
+    "Type": "struct<ConsoleUrlLink:string,CreationTime:string,Exposure:string,FirstSeen:string,IsInternetFacing:boolean,LastSeen:string,Name:string,OrcaScore:double,Region:string,RiskLevel:string,UpdatedTime:string>",
+    "Parameters": {
+      "iceberg.field.current": "true",
+      "iceberg.field.id": "12",
+      "iceberg.field.optional": "true"
+    }
+  },
+  {
+    "Name": "labels",
+    "Type": "array<string>",
+    "Parameters": {
+      "iceberg.field.current": "true",
+      "iceberg.field.id": "13",
+      "iceberg.field.optional": "true"
+    }
+  },
+  {
+    "Name": "lastseen",
+    "Type": "string",
+    "Parameters": {
+      "iceberg.field.current": "true",
+      "iceberg.field.id": "14",
+      "iceberg.field.optional": "true"
+    }
+  },
+  {
+    "Name": "orcascore",
+    "Type": "double",
+    "Parameters": {
+      "iceberg.field.current": "true",
+      "iceberg.field.id": "15",
+      "iceberg.field.optional": "true"
+    }
+  },
+  {
+    "Name": "riskfindings",
+    "Type": "map<string,string>",
+    "Parameters": {
+      "iceberg.field.current": "true",
+      "iceberg.field.id": "16",
+      "iceberg.field.optional": "true"
+    }
+  },
+  {
+    "Name": "risklevel",
+    "Type": "string",
+    "Parameters": {
+      "iceberg.field.current": "true",
+      "iceberg.field.id": "17",
+      "iceberg.field.optional": "true"
+    }
+  },
+  {
+    "Name": "source",
+    "Type": "string",
+    "Parameters": {
+      "iceberg.field.current": "true",
+      "iceberg.field.id": "18",
+      "iceberg.field.optional": "true"
+    }
+  },
+  {
+    "Name": "status",
+    "Type": "string",
+    "Parameters": {
+      "iceberg.field.current": "true",
+      "iceberg.field.id": "19",
+      "iceberg.field.optional": "true"
+    }
+  },
+  {
+    "Name": "title",
+    "Type": "string",
+    "Parameters": {
+      "iceberg.field.current": "true",
+      "iceberg.field.id": "20",
+      "iceberg.field.optional": "true"
+    }
+  },
+  {
+    "Name": "_raw_ingested_at",
+    "Type": "timestamp",
+    "Parameters": {
+      "iceberg.field.current": "true",
+      "iceberg.field.id": "21",
+      "iceberg.field.optional": "true"
+    }
+  },
+  {
+    "Name": "_source_file",
+    "Type": "string",
+    "Parameters": {
+      "iceberg.field.current": "true",
+      "iceberg.field.id": "22",
+      "iceberg.field.optional": "true"
+    }
+  },
+  {
+    "Name": "execution_date",
+    "Type": "date",
+    "Parameters": {
+      "iceberg.field.current": "true",
+      "iceberg.field.id": "23",
+      "iceberg.field.optional": "true"
+    }
+  }
+]
