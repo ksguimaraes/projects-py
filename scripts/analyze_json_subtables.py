@@ -119,7 +119,7 @@ def _discover_object_array_keys(obj_records: list[dict]) -> dict[str, list[dict]
                 if len(samples[canon]) < SAMPLE_SIZE:
                     samples[canon].extend(item for item in v if isinstance(item, dict))
             elif isinstance(v, list) and v and lower not in canonical:
-                discarded.add(lower)
+                pass
 
     return samples
 
@@ -290,7 +290,7 @@ def analyze(data: list[dict]) -> tuple[TableSchema, list[str]]:
 
         # Subtabelas descobertas via scan completo
         for sub_col, items in sorted(obj_array_samples.items()):
-            table_name = f"alert_{col}_{sub_col}".lower()
+            table_name = f"alerts_{col}_{sub_col}".lower()
             # Contagem real de alertas que têm esta chave
             alert_count = sum(
                 1 for rec in obj_records if isinstance(rec.get(sub_col), list) and rec[sub_col]
@@ -329,7 +329,7 @@ def analyze(data: list[dict]) -> tuple[TableSchema, list[str]]:
         ]
         lengths = [len(row.get(col) or []) for row in data]
         avg_len = sum(lengths) / total if total else 0
-        table_name = f"alert_{col.lower()}"
+        table_name = f"alerts_{col.lower()}"
 
         print(f"\n  Coluna: {col}")
         print(f"    Média de itens/reg : {avg_len:.1f}  |  Máx: {max(lengths) if lengths else 0}")
