@@ -724,6 +724,163 @@ class IcebergIngestion:
         logger.info(f"Escrita concluída em {table_identifier}")
 
     # =========================================================================
+    # PIPELINE PRINCIPAL — métodos auxiliares
+    # =========================================================================
+
+    @classmethod
+    def _prepare_dataframe(cls, df: DataFrame) -> DataFrame:
+        """Etapa 2: corrige conflitos de case e adiciona _trusted_ingested_at."""
+        logger.info("\nETAPA 2: Tratar conflitos de nomes")
+        df = cls.fix_duplicate_column_names(df)
+        df = df.withColumn("_trusted_ingested_at", F.current_timestamp())
+        return df
+
+    @classmethod
+    def _discover_nested_structure(
+        cls,
+        df: DataFrame,
+        main_table: str,
+    ) -> Tuple[List, Dict[str, List[str]]]:
+        """
+        Etapa 3: identifica tabelas filhas e pré-descobre chaves de array em MAPs.
+
+        Returns:
+            (nested_tables_info, map_keys_to_filter)
+        """
+        logger.info("\nETAPA 3: Identificar estruturas para normalização")
+        logger.info("-" * 60)
+
+        nested_tables_info = cls.identify_nested_tables(main_table, df.schema)
+
+        if not nested_tables_info:
+            logger.info("Nenhuma estrutura semi-estruturada detectada")
+        else:
+            logger.info(f"{len(nested_tables_info)} tabela(s) filha(s) identificada(s):")
+            for path, tname, _ in nested_tables_info:
+                logger.info(f"  {path} → {tname}")
+
+        map_keys_to_filter: Dict[str, List[str]] = {}
+        for nested_path, _, _ in nested_tables_info:
+            col_name = nested_path.split('.')[0]
+            field_obj = next((f for f in df.schema.fields if f.name == col_name), None)
+            if field_obj and isinstance(field_obj.dataType, MapType):
+                if col_name not in map_keys_to_filter:
+                    logger.info(f"  Descobrindo chaves array no MAP '{col_name}'...")
+                    keys = cls._discover_map_array_keys(df, col_name)
+                    map_keys_to_filter[col_name] = keys
+                    logger.info(f"  MAP '{col_name}': {len(keys)} chave(s) com array encontrada(s)")
+
+        return nested_tables_info, map_keys_to_filter
+
+    @classmethod
+    def _write_main_table(
+        cls,
+        spark: SparkSession,
+        df: DataFrame,
+        nested_tables_info: List,
+        map_keys_to_filter: Dict[str, List[str]],
+        dest: Dict[str, Any],
+    ) -> None:
+        """Etapa 4: remove campos extraídos, filtra MAPs e escreve a tabela principal."""
+        logger.info("\nETAPA 4: Criar/atualizar tabela principal")
+
+        catalog   = dest["catalog_name"]
+        database  = dest["database_name"]
+        main_table_identifier = f"{catalog}.{database}.{dest['main_table_name']}"
+
+        df_main = cls._remove_nested_fields(df, nested_tables_info)
+
+        for map_col, keys in map_keys_to_filter.items():
+            if keys:
+                df_main = cls._filter_map_column(df_main, map_col, keys)
+                logger.info(f"  MAP '{map_col}': {len(keys)} chave(s) de array removida(s) — escalares mantidos")
+
+        logger.info(f"Tabela principal: {main_table_identifier}")
+        logger.info(f"Colunas: {len(df_main.columns)}")
+
+        cls.create_or_append_table(
+            spark=spark,
+            df=df_main,
+            table_identifier=main_table_identifier,
+            partition_by=dest.get("partition_by", []),
+            write_mode=dest["write_mode"],
+            options=dest.get("options"),
+        )
+
+    @classmethod
+    def _write_child_tables(
+        cls,
+        spark: SparkSession,
+        df: DataFrame,
+        nested_tables_info: List,
+        execution_date: str,
+        dest: Dict[str, Any],
+    ) -> None:
+        """Etapa 5: extrai e escreve todas as tabelas filhas (Array<Struct> e MAP)."""
+        if not nested_tables_info:
+            return
+
+        logger.info("\nETAPA 5: Criar/atualizar tabelas filhas")
+
+        catalog      = dest["catalog_name"]
+        database     = dest["database_name"]
+        partition_by = dest.get("partition_by", [])
+
+        id_columns = [
+            c for c in df.columns
+            if c.lower().endswith('id')
+            and c.lower() not in ('execution_date', '_trusted_ingested_at', '_raw_ingested_at')
+        ]
+        root_id_col = id_columns[0] if id_columns else df.columns[0]
+        logger.info(f"Coluna ID raiz: {root_id_col}")
+
+        for nested_path, child_table_name, _ in nested_tables_info:
+            logger.info(f"\nProcessando: {nested_path} → {child_table_name}")
+
+            path_parts  = nested_path.split('.')
+            top_field   = next((f for f in df.schema.fields if f.name == path_parts[0]), None)
+            is_map      = top_field is not None and isinstance(top_field.dataType, MapType)
+
+            if is_map:
+                map_results = cls.extract_nested_from_map(
+                    spark, df, nested_path, root_id_col, execution_date
+                )
+                if not map_results:
+                    logger.warning(f"Nenhum dado para {nested_path}")
+                    continue
+
+                for _, suffix, sub_df in map_results:
+                    sub_table_identifier = f"{catalog}.{database}.{child_table_name}{suffix}"
+                    logger.info(f"Registros extraídos: {sub_df.count()} → {child_table_name}{suffix}")
+                    cls.create_or_append_table(
+                        spark=spark,
+                        df=sub_df,
+                        table_identifier=sub_table_identifier,
+                        partition_by=partition_by,
+                        write_mode=dest["write_mode"],
+                        options=dest.get("options"),
+                    )
+            else:
+                nested_df = cls.extract_nested_from_array(
+                    df, nested_path, root_id_col, execution_date
+                )
+                if nested_df is None or nested_df.count() == 0:
+                    logger.warning(f"Nenhum dado para {nested_path}")
+                    continue
+
+                logger.info(f"Registros extraídos: {nested_df.count()}")
+                cls.create_or_append_table(
+                    spark=spark,
+                    df=nested_df,
+                    table_identifier=f"{catalog}.{database}.{child_table_name}",
+                    partition_by=partition_by,
+                    write_mode=dest["write_mode"],
+                    options=dest.get("options"),
+                )
+
+        logger.info("\nTodas as tabelas filhas processadas")
+
+    # =========================================================================
     # PIPELINE PRINCIPAL
     # =========================================================================
 
@@ -743,27 +900,20 @@ class IcebergIngestion:
           3. Identifica tabelas filhas (Arrays + Maps)
           4. Cria/atualiza tabela principal (sem campos extraídos)
           5. Cria/atualiza tabelas filhas
-
-        Args:
-            spark: SparkSession ativa
-            execution_date: Data no formato YYYY-MM-DD
-            config: Configuração com source e destination
         """
-        # =====================================================================
-        # ETAPA 1: Ler dados da tabela RAW
-        # =====================================================================
+        dest = config["destination"]
+        main_table_identifier = f"{dest['catalog_name']}.{dest['database_name']}.{dest['main_table_name']}"
+
         logger.info("=" * 60)
         logger.info("TRUSTED ICEBERG WRITER")
         logger.info(f"ExecuteDate: {execution_date}")
         logger.info("=" * 60)
 
+        # Etapa 1: leitura
         logger.info("\nETAPA 1: Buscar dados da tabela RAW")
-
-        database_name = config["source"]["database_name"]
-        table_name = config["source"]["table_name"]
-        partition_date_by = config["source"].get("partition_date_by", "_raw_ingested_at")
-        source_table = f"{database_name}.{table_name}"
-
+        source      = config["source"]
+        source_table = f"{source['database_name']}.{source['table_name']}"
+        partition_date_by = source.get("partition_date_by", "_raw_ingested_at")
         logger.info(f"Tabela fonte: {source_table} | Partição: {partition_date_by}")
 
         df_raw = cls.read_source_table(spark, source_table, partition_date_by, execution_date)
@@ -775,172 +925,15 @@ class IcebergIngestion:
         if record_count == 0:
             logger.warning("Nenhum registro para processar")
             return
-
         logger.info(f"Registros: {record_count} | Colunas: {len(df_raw.columns)}")
 
-        # =====================================================================
-        # ETAPA 2: Tratar conflitos case-sensitive (Id vs id)
-        # =====================================================================
-        logger.info("\nETAPA 2: Tratar conflitos de nomes")
-        df_raw = cls.fix_duplicate_column_names(df_raw)
-
-        # Adiciona _trusted_ingested_at
-        df_raw = df_raw.withColumn("_trusted_ingested_at", F.current_timestamp())
-
-        # =====================================================================
-        # ETAPA 3: Identificar tabelas filhas
-        # =====================================================================
-        dest = config["destination"]
-        catalog = dest["catalog_name"]
-        database = dest["database_name"]
-        main_table = dest["main_table_name"]
-        main_table_identifier = f"{catalog}.{database}.{main_table}"
-        partition_by = dest.get("partition_by", [])
-
-        logger.info("\nETAPA 3: Identificar estruturas para normalização")
-        logger.info("-" * 60)
-
-        nested_tables_info = cls.identify_nested_tables(main_table, df_raw.schema)
-
-        if not nested_tables_info:
-            logger.info("Nenhuma estrutura semi-estruturada detectada")
-        else:
-            logger.info(f"{len(nested_tables_info)} tabela(s) filha(s) identificada(s):")
-            for path, tname, _ in nested_tables_info:
-                logger.info(f"  {path} → {tname}")
-
-        # Pré-descoberta: identifica quais chaves de cada MAP virarão subtabelas.
-        # Necessário para filtrar o MAP no df_main antes de escrevê-lo.
-        map_keys_to_filter: Dict[str, List[str]] = {}
-        for nested_path, _, _ in nested_tables_info:
-            col_name = nested_path.split('.')[0]
-            field_obj = next(
-                (f for f in df_raw.schema.fields if f.name == col_name), None
-            )
-            if field_obj and isinstance(field_obj.dataType, MapType):
-                if col_name not in map_keys_to_filter:
-                    logger.info(f"  Descobrindo chaves array no MAP '{col_name}'...")
-                    keys = cls._discover_map_array_keys(df_raw, col_name)
-                    map_keys_to_filter[col_name] = keys
-                    logger.info(f"  MAP '{col_name}': {len(keys)} chave(s) com array encontrada(s)")
-
-        # =====================================================================
-        # ETAPA 4: Criar/atualizar tabela principal
-        # =====================================================================
-        logger.info("\nETAPA 4: Criar/atualizar tabela principal")
-
-        df_main = cls._remove_nested_fields(df_raw, nested_tables_info)
-
-        # Filtra chaves extraídas de cada MAP, mantendo os valores escalares
-        for map_col, keys in map_keys_to_filter.items():
-            if keys:
-                df_main = cls._filter_map_column(df_main, map_col, keys)
-                logger.info(f"  MAP '{map_col}': {len(keys)} chave(s) de array removida(s) — escalares mantidos")
-
-        logger.info(f"Tabela principal: {main_table_identifier}")
-        logger.info(f"Colunas: {len(df_main.columns)}")
-
-        cls.create_or_append_table(
-            spark=spark,
-            df=df_main,
-            table_identifier=main_table_identifier,
-            partition_by=partition_by,
-            write_mode=dest["write_mode"],
-            options=dest.get("options")
+        # Etapas 2-5
+        df_raw = cls._prepare_dataframe(df_raw)
+        nested_tables_info, map_keys_to_filter = cls._discover_nested_structure(
+            df_raw, dest["main_table_name"]
         )
-
-        # =====================================================================
-        # ETAPA 5: Criar/atualizar tabelas filhas
-        # =====================================================================
-        if nested_tables_info:
-            logger.info("\nETAPA 5: Criar/atualizar tabelas filhas")
-
-            # Identifica coluna ID principal
-            id_columns = [
-                c for c in df_raw.columns
-                if c.lower().endswith('id')
-                and c.lower() not in ('execution_date', '_trusted_ingested_at', '_raw_ingested_at')
-            ]
-            root_id_col = id_columns[0] if id_columns else df_raw.columns[0]
-            logger.info(f"Coluna ID raiz: {root_id_col}")
-
-            for nested_path, child_table_name, nested_schema in nested_tables_info:
-                logger.info(f"\nProcessando: {nested_path} → {child_table_name}")
-
-                # Detecta tipo do campo para escolher método de extração
-                is_map_field = False
-                map_results = None
-                nested_df = None
-                path_parts = nested_path.split('.')
-                if len(path_parts) > 1:
-                    parent_name = path_parts[0]
-                    parent_field = next(
-                        (f for f in df_raw.schema.fields if f.name == parent_name), None
-                    )
-                    if parent_field and isinstance(parent_field.dataType, MapType):
-                        # Campo é MAP → extração especial
-                        is_map_field = True
-                        map_results = cls.extract_nested_from_map(
-                            spark, df_raw, nested_path, root_id_col, execution_date
-                        )
-                    else:
-                        nested_df = cls.extract_nested_from_array(
-                            df_raw, nested_path, root_id_col, execution_date
-                        )
-                else:
-                    # Campo raiz
-                    field_obj = next(
-                        (f for f in df_raw.schema.fields if f.name == path_parts[0]), None
-                    )
-                    if field_obj and isinstance(field_obj.dataType, MapType):
-                        is_map_field = True
-                        map_results = cls.extract_nested_from_map(
-                            spark, df_raw, nested_path, root_id_col, execution_date
-                        )
-                    else:
-                        is_map_field = False
-                        nested_df = cls.extract_nested_from_array(
-                            df_raw, nested_path, root_id_col, execution_date
-                        )
-
-                # Tratamento para campos MAP (retorna lista de sub-tabelas)
-                if is_map_field:
-                    if not map_results:
-                        logger.warning(f"Nenhum dado para {nested_path}")
-                        continue
-
-                    for original_key, suffix, sub_df in map_results:
-                        sub_table_name = f"{child_table_name}{suffix}"
-                        sub_table_identifier = f"{catalog}.{database}.{sub_table_name}"
-                        logger.info(f"Registros extraídos: {sub_df.count()} → {sub_table_name}")
-
-                        cls.create_or_append_table(
-                            spark=spark,
-                            df=sub_df,
-                            table_identifier=sub_table_identifier,
-                            partition_by=partition_by,
-                            write_mode=dest["write_mode"],
-                            options=dest.get("options")
-                        )
-                else:
-                    if nested_df is None or nested_df.count() == 0:
-                        logger.warning(f"Nenhum dado para {nested_path}")
-                        continue
-
-                    logger.info(f"Registros extraídos: {nested_df.count()}")
-
-                    child_table_identifier = f"{catalog}.{database}.{child_table_name}"
-
-                    cls.create_or_append_table(
-                        spark=spark,
-                        df=nested_df,
-                        table_identifier=child_table_identifier,
-                        partition_by=partition_by,
-                        write_mode=dest["write_mode"],
-                        options=dest.get("options")
-                    )
-
-            logger.info("\nTodas as tabelas filhas processadas")
+        cls._write_main_table(spark, df_raw, nested_tables_info, map_keys_to_filter, dest)
+        cls._write_child_tables(spark, df_raw, nested_tables_info, execution_date, dest)
 
         logger.info("=" * 60)
         logger.info(f"TRUSTED carregada: {main_table_identifier}")
