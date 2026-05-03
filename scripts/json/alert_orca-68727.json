@@ -1,0 +1,108 @@
+{
+  "Title": "Controller creating containers without dropped capabilities",
+  "Labels": [
+    "CWE-400",
+    "shiftleft:iac",
+    "shiftleft:iac:platform:DockerCompose",
+    "source:shiftleft",
+    "source: Orca Scan"
+  ],
+  "CreatedAt": "2025-10-24T18:34:22+00:00",
+  "Status": "open",
+  "RiskLevel": "medium",
+  "AlertType": "Controller creating containers without dropped capabilities",
+  "Category": "Lateral movement",
+  "OrcaScore": 5.0,
+  "Source": "docker-compose.yml:13",
+  "LastSeen": "2026-03-28T13:28:55+00:00",
+  "RiskFindings": {
+    "ci_name": "github-app",
+    "code_owners": [
+      "@olxbr/squad-payments"
+    ],
+    "code_snippet": [
+      {
+        "line": "    command: bash -c \"coverage run --source=src -m unittest tests/gold_config/test_config.py &&  coverage report --fail-under=90 --show-missing\" ",
+        "position": 9
+      },
+      {
+        "line": "    depends_on:",
+        "position": 10
+      },
+      {
+        "line": "      - consul",
+        "position": 11
+      },
+      {
+        "line": "",
+        "position": 12
+      },
+      {
+        "line": "  consul:",
+        "position": 13
+      },
+      {
+        "line": "    image: consul:1.0.0",
+        "position": 14
+      },
+      {
+        "line": "    ports:",
+        "position": 15
+      },
+      {
+        "line": "      - 8500:8500",
+        "position": 16
+      },
+      {
+        "line": "",
+        "position": 17
+      },
+      {
+        "line": "",
+        "position": 18
+      }
+    ],
+    "cwe": [
+      "CWE-400"
+    ],
+    "description_urls": [
+      "https://docs.docker.com/compose/compose-file/compose-file-v3/#cap_add-cap_drop"
+    ],
+    "expected_value": "Docker compose file to have 'cap_drop' attribute",
+    "feature_type": "iac",
+    "is_custom": false,
+    "is_test_file": false,
+    "key": "iac_45c2b212-1f4a-44b5-9edb-bb7ea725b5b1_services.consul_docker-compose.yml",
+    "line": 13,
+    "origin": "docker-compose.yml:13",
+    "origin_url": "https://github.com/olxbr/py-gold-config/blame/79d835c458aa80c46c0e7bcc75c22519fbed3c5b/docker-compose.yml?plain=1#L13",
+    "platform": "DockerCompose",
+    "repository": {
+      "name": "olxbr/py-gold-config",
+      "url": "https://github.com/olxbr/py-gold-config"
+    }
+  },
+  "AlertId": "orca-68727",
+  "CloudAccount": {
+    "Name": "olxbr/py-gold-config (Project: olxbr/py-gold-config)"
+  },
+  "Inventories": {
+    "count": 1,
+    "value": [
+      {
+        "OrcaScore": 5.2,
+        "RiskLevel": "medium"
+      }
+    ]
+  },
+  "Inventory": {
+    "FirstSeen": "2025-10-24T18:34:24+00:00",
+    "OrcaScore": 5.2,
+    "LastSeen": "2026-03-28T13:29:48+00:00",
+    "Name": "olxbr/py-gold-config",
+    "CreationTime": "2021-12-10T19:35:30+00:00",
+    "IsInternetFacing": false,
+    "Exposure": "trusted_access",
+    "RiskLevel": "medium"
+  }
+}

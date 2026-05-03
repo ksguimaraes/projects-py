@@ -21,12 +21,14 @@ Detectado MapType: RiskFindings → alerts_riskfindings (parse em runtime)
 2 tabela(s) filha(s) identificada(s):
   Inventories.value → alerts_inventories_value
   RiskFindings → alerts_riskfindings
+  Descobrindo chaves array no MAP 'RiskFindings'...
+  MAP 'RiskFindings': 42 chave(s) com array encontrada(s)
 
 ETAPA 4: Criar/atualizar tabela principal
 Removendo campos extraídos: {'Inventories': ['value'], 'RiskFindings': None}
-  Removendo coluna: RiskFindings
+  MAP 'RiskFindings': 42 chave(s) de array removida(s) — escalares mantidos
 Tabela principal: glue_catalog.orca_trusted.alerts
-Colunas: 23
+Colunas: 24
 Criando tabela glue_catalog.orca_trusted.alerts
 Particionamento: ['execution_date']
 Tabela glue_catalog.orca_trusted.alerts criada com sucesso
@@ -88,7 +90,7 @@ MAP 'RiskFindings' chave 'tags' contém JSON array → sub-tabela com sufixo '_t
 MAP 'RiskFindings' chave 'LinuxOsPasswords' contém JSON array → sub-tabela com sufixo '_linuxospasswords'
 MAP 'RiskFindings' chave 'ResourceRecordSets' contém JSON array → sub-tabela com sufixo '_resourcerecordsets'
 MAP 'RiskFindings' chave 'AwsIamPasswordPolicy' contém JSON array → sub-tabela com sufixo '_awsiampasswordpolicy'
-MAP 'RiskFindings' chave 'EC2Instances' contém JSON array → sub-tabela com sufixo '_ec2instances'
+MAP 'RiskFindings' chave 'EC2Instances' ignorada — sufixo '_ec2instances' já processado (conflito de case)
 MAP 'RiskFindings' chave 'description_urls' contém JSON array → sub-tabela com sufixo '_description_urls'
   Chave 'description_urls': array vazio após parse, ignorando
 MAP 'RiskFindings' chave 'data' contém JSON array → sub-tabela com sufixo '_data'
@@ -231,11 +233,6 @@ Registros extraídos: 19 → alerts_riskfindings_awsiampasswordpolicy
 Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_awsiampasswordpolicy
 Tabela glue_catalog.orca_trusted.alerts_riskfindings_awsiampasswordpolicy criada com sucesso
 Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_awsiampasswordpolicy
-Registros extraídos: 3 → alerts_riskfindings_ec2instances
-Tabela glue_catalog.orca_trusted.alerts_riskfindings_ec2instances existe — sincronizando schema
-Schema de glue_catalog.orca_trusted.alerts_riskfindings_ec2instances já sincronizado
-DataFrame alinhado: 9 colunas
-Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_ec2instances
 Registros extraídos: 6626 → alerts_riskfindings_data
 Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_data
 Tabela glue_catalog.orca_trusted.alerts_riskfindings_data criada com sucesso
@@ -308,10 +305,6 @@ Registros extraídos: 546311 → alerts_riskfindings_code_snippet
 Criando tabela glue_catalog.orca_trusted.alerts_riskfindings_code_snippet
 Tabela glue_catalog.orca_trusted.alerts_riskfindings_code_snippet criada com sucesso
 Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings_code_snippet
-Registros extraídos: 1256291 → alerts_riskfindings
-Criando tabela glue_catalog.orca_trusted.alerts_riskfindings
-Tabela glue_catalog.orca_trusted.alerts_riskfindings criada com sucesso
-Escrita concluída em glue_catalog.orca_trusted.alerts_riskfindings
 
 Todas as tabelas filhas processadas
 ============================================================

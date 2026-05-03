@@ -350,9 +350,14 @@ class IcebergIngestion:
                 map_field = path_parts[0]
                 col_ref = F.col(f"`{map_field}`")
 
+            # Extrai o id do MAP como FK para as tabelas filhas (ex: riskfindings_id)
+            parent_id_col = f"{map_field.lower()}_id"
+            parent_id_expr = F.coalesce(col_ref["id"], col_ref["Id"])
+
             # Explode o map em key/value
             exploded_df = df.select(
                 F.col(f"`{root_id_col}`").alias(f"{root_id_col.lower()}"),
+                parent_id_expr.alias(parent_id_col),
                 F.explode_outer(col_ref).alias("_map_key", "_map_value")
             ).filter(F.col("_map_value").isNotNull())
 
@@ -406,12 +411,14 @@ class IcebergIngestion:
 
                 parsed_df = key_df.select(
                     f"{root_id_col.lower()}",
+                    parent_id_col,
                     F.from_json(F.col("_map_value"), array_schema).alias("_parsed_array")
                 ).filter(F.col("_parsed_array").isNotNull())
 
                 # Explode o array em registros individuais
                 final_df = parsed_df.select(
                     f"{root_id_col.lower()}",
+                    parent_id_col,
                     F.explode_outer(F.col("_parsed_array")).alias("_nested")
                 ).filter(F.col("_nested").isNotNull())
 
@@ -422,6 +429,7 @@ class IcebergIngestion:
                 # Expande o struct aninhado
                 final_df = final_df.select(
                     f"{root_id_col.lower()}",
+                    parent_id_col,
                     "_nested.*"
                 )
 
@@ -910,7 +918,7 @@ class IcebergIngestion:
                             spark=spark,
                             df=sub_df,
                             table_identifier=sub_table_identifier,
-                            partition_by=[],
+                            partition_by=partition_by,
                             write_mode=dest["write_mode"],
                             options=dest.get("options")
                         )
@@ -927,7 +935,7 @@ class IcebergIngestion:
                         spark=spark,
                         df=nested_df,
                         table_identifier=child_table_identifier,
-                        partition_by=[],
+                        partition_by=partition_by,
                         write_mode=dest["write_mode"],
                         options=dest.get("options")
                     )

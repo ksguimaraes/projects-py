@@ -1,0 +1,2796 @@
+{
+  "total_records": 131463,
+  "object_array_keys_count": 41,
+  "object_array_keys": [
+    {
+      "key": "code_snippet",
+      "alert_count": 50449,
+      "value_kinds": {
+        "array_of_objects": 50449
+      },
+      "sample_alert_id": "orca-68727",
+      "sample_element": {
+        "line": "    command: bash -c \"coverage run --source=src -m unittest tests/gold_config/test_config.py &&  coverage report --fail-under=90 --show-missing\" ",
+        "position": 9
+      }
+    },
+    {
+      "key": "top_cves",
+      "alert_count": 11926,
+      "value_kinds": {
+        "array_of_objects": 11926
+      },
+      "sample_alert_id": "orca-934398",
+      "sample_element": {
+        "cve_id": "CVE-2024-32002",
+        "cvss_score": 9.0,
+        "cvss_severity": "CRITICAL",
+        "cvss_source": "CNA v3",
+        "cvss_source_link": "https://nvd.nist.gov/vuln/detail/CVE-2024-32002",
+        "cvss_vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:H/I:H/A:H",
+        "exploitable": true,
+        "first_seen": "2026-03-19T17:23:37+00:00",
+        "fixable": true
+      }
+    },
+    {
+      "key": "SgIpPermissions",
+      "alert_count": 2318,
+      "value_kinds": {
+        "array_of_objects": 2318
+      },
+      "sample_alert_id": "orca-337843",
+      "sample_element": {
+        "Egress": true,
+        "IpProtocol": "-1",
+        "IpRanges": [
+          "0.0.0.0/0"
+        ],
+        "Ipv6Ranges": [
+          "::/0"
+        ],
+        "PortRange": null,
+        "id": "d09569f9-35d5-af55-3507-74ef7c08691b",
+        "name": "sg-0884896ffd1c10b16_2",
+        "type": "AwsEc2IpPermission"
+      }
+    },
+    {
+      "key": "Policies",
+      "alert_count": 2115,
+      "value_kinds": {
+        "array_of_objects": 2115,
+        "array_empty": 47
+      },
+      "sample_alert_id": "orca-336200",
+      "sample_element": {
+        "asset_unique_id": "AwsIamPolicy_183337677225_d09569f9-42b4-508e-28c5-7c9d2205ed2f",
+        "id": "d09569f9-3cd2-d426-5b09-f2e595156cb6",
+        "name": "cm_diego.augusto_1739369123_buom",
+        "type": "AwsIamPolicy"
+      }
+    },
+    {
+      "key": "data",
+      "alert_count": 1589,
+      "value_kinds": {
+        "NoneType": 31073,
+        "array_of_objects": 1589
+      },
+      "sample_alert_id": "orca-68747",
+      "sample_element": {
+        "name": "web",
+        "url": "https://api.github.com/repos/olxbr/py-gold-config/hooks/332663590"
+      }
+    },
+    {
+      "key": "SensitiveFiles",
+      "alert_count": 1380,
+      "value_kinds": {
+        "array_of_objects": 1380
+      },
+      "sample_alert_id": "orca-957033",
+      "sample_element": {
+        "AccessTime": "2026-04-06T18:49:38+00:00",
+        "Content": {
+          "asset_unique_id": "storage_963957629970_jarvis-slack-tfstate-prod",
+          "id": "d09569f9-3271-e0d7-7b76-41c1604f6688",
+          "name": "jarvis-slack-tfstate-prod",
+          "type": "AwsS3Bucket"
+        },
+        "CreationTime": "2026-04-06T18:49:38+00:00",
+        "ModificationTime": "2026-04-06T18:49:38+00:00",
+        "Path": "/jarvis",
+        "SensitiveData": [
+          {
+            "Count": 1,
+            "Identifier": "Slack Webhook",
+            "Sample": "[\"https://hooks.slack.com/services/T02HHA0JJ/******************************\"]",
+            "id": "d09569f9-31e6-aba5-abd1-0f27fa70ef0a",
+            "name": "Slack Webhook",
+            "type": "SensitiveData"
+          }
+        ],
+        "id": "d09569f9-344f-6906-2d73-ba2866fe1f88",
+        "name": "terraform.tfstate",
+        "type": "SensitiveFile"
+      }
+    },
+    {
+      "key": "DependencyPackages",
+      "alert_count": 648,
+      "value_kinds": {
+        "array_of_objects": 648
+      },
+      "sample_alert_id": "orca-929996",
+      "sample_element": {
+        "DefinitionFile": "/usr/src/app/node_modules/import-in-the-middle/node_modules/acorn-import-assertions/package.json",
+        "IsMissing": true,
+        "PackageManager": "npm",
+        "id": "d09569f9-32ba-0301-1f71-ab5c84fe46c4",
+        "name": "test262",
+        "type": "DependencyPackage"
+      }
+    },
+    {
+      "key": "NetworkAclRules",
+      "alert_count": 500,
+      "value_kinds": {
+        "array_of_objects": 500
+      },
+      "sample_alert_id": "orca-951233",
+      "sample_element": {
+        "CidrBlock": "0.0.0.0/0",
+        "Egress": false,
+        "Protocol": "-1",
+        "RuleAction": "allow",
+        "RuleId": "acl-0ac3fdc5486d16410_2",
+        "RuleNumber": 100,
+        "id": "d09569f9-3d5f-9328-3e25-e70d6deacedb",
+        "name": "acl-0ac3fdc5486d16410_2",
+        "type": "AwsEc2NetworkAclRule"
+      }
+    },
+    {
+      "key": "AclGrants",
+      "alert_count": 377,
+      "value_kinds": {
+        "array_of_objects": 377
+      },
+      "sample_alert_id": "orca-343155",
+      "sample_element": {
+        "GranteeType": "Group",
+        "GranteeURI": "http://acs.amazonaws.com/groups/s3/LogDelivery",
+        "Id": "olx-dbm:Group:http://acs.amazonaws.com/groups/s3/LogDelivery:WRITE_ACP",
+        "Permission": "WRITE_ACP",
+        "id": "d09569f9-3544-413e-7c28-f4b4789970d3",
+        "name": "olx-dbm:Group:http://acs.amazonaws.com/groups/s3/LogDelivery:WRITE_ACP",
+        "type": "AwsS3AclGrant"
+      }
+    },
+    {
+      "key": "EntitySources",
+      "alert_count": 239,
+      "value_kinds": {
+        "array_of_objects": 239
+      },
+      "sample_alert_id": "orca-996624",
+      "sample_element": {
+        "asset_unique_id": "AwsCloudFront_183337677225_d09569f9-aeae-9a10-0b98-f62cad99f885",
+        "id": "d09569f9-3998-9f6a-f2a4-bfae60b35257",
+        "name": "d1zv96yy3506ej.cloudfront.net",
+        "type": "AwsCloudFront"
+      }
+    },
+    {
+      "key": "SensitiveData",
+      "alert_count": 207,
+      "value_kinds": {
+        "array_of_objects": 207
+      },
+      "sample_alert_id": "orca-935440",
+      "sample_element": {
+        "ExtraData": {
+          "Commit": "f95f0b083525374466e919126d7b37b23c921cbf",
+          "Date": "2022-05-16T19:54:31Z",
+          "File": "/app/.local/local.env",
+          "LineNumber": 11,
+          "Offender": "6aa4b2e*****************************"
+        },
+        "id": "d09569f9-3327-f3ab-e41e-6ea5110b8b8f",
+        "name": "Git Repository",
+        "type": "SensitiveData"
+      }
+    },
+    {
+      "key": "Listeners",
+      "alert_count": 143,
+      "value_kinds": {
+        "array_of_objects": 143
+      },
+      "sample_alert_id": "orca-358146",
+      "sample_element": {
+        "Arn": "arn:aws:elasticloadbalancing:us-east-1:183337677225:listener/app/ajudaolxpay/c88e46f7a8f12b75/d6c5a64583aadeae",
+        "AwsEc2Elbv2Rules": [
+          {
+            "AwsEc2Elbv2RuleActions": [
+              {
+                "ActionType": "forward",
+                "RedirectConfig": null,
+                "id": "d09569f9-30ac-c1e7-b913-33c3c0360a74",
+                "name": "listener-rule/app/ajudaolxpay/c88e46f7a8f12b75/d6c5a64583aadeae/7a6790f23a2fb7e4/0",
+                "type": "AwsEc2Elbv2RuleAction"
+              }
+            ],
+            "asset_unique_id": "AwsEc2Elbv2Rule_183337677225_d09569f9-0ba4-fded-a2bc-c5c8637084b3",
+            "id": "d09569f9-3700-e143-3f26-5e08ef5f37c3",
+            "name": "listener-rule/app/ajudaolxpay/c88e46f7a8f12b75/d6c5a64583aadeae/7a6790f23a2fb7e4",
+            "type": "AwsEc2Elbv2Rule"
+          },
+          {
+            "AwsEc2Elbv2RuleActions": [],
+            "asset_unique_id": "AwsEc2Elbv2Rule_183337677225_d09569f9-d190-6449-b045-73ba25d07aab",
+            "id": "d09569f9-3d25-ecbc-77f4-019d4b980cd9",
+            "name": "listener-rule/app/ajudaolxpay/c88e46f7a8f12b75/d6c5a64583aadeae/9c90d82b7bc85bb4",
+            "type": "AwsEc2Elbv2Rule"
+          }
+        ],
+        "Port": 80,
+        "Protocol": "HTTP",
+        "TargetGroupArn": "arn:aws:elasticloadbalancing:us-east-1:183337677225:targetgroup/TESTEFRONT2/6f192e453e39f49a",
+        "asset_unique_id": "AwsEc2Elbv2Listener_183337677225_d09569f9-f23d-75af-05f2-357481abb31c",
+        "id": "d09569f9-36c2-26bd-6081-a9f71bd40d05",
+        "name": "listener/app/ajudaolxpay/c88e46f7a8f12b75/d6c5a64583aadeae",
+        "type": "AwsEc2Elbv2Listener"
+      }
+    },
+    {
+      "key": "ExternalPorts",
+      "alert_count": 142,
+      "value_kinds": {
+        "array_of_objects": 142
+      },
+      "sample_alert_id": "orca-996624",
+      "sample_element": {
+        "PortNumber": 443,
+        "Protocol": "HTTPS",
+        "SSLCertificateExpiration": "2026-04-23T23:59:59+00:00",
+        "SSLCertificateStatus": "VALID",
+        "id": "d09569f9-3c23-cebe-ae9b-9112e761cbdc",
+        "name": "https://d1zv96yy3506ej.cloudfront.net:443",
+        "type": "ExternalPort"
+      }
+    },
+    {
+      "key": "SecurityGroups",
+      "alert_count": 135,
+      "value_kinds": {
+        "array_of_objects": 135
+      },
+      "sample_alert_id": "orca-949653",
+      "sample_element": {
+        "Description": "default VPC security group",
+        "GroupId": "sg-0bda7bad71c292f07",
+        "SgIpPermissions": [
+          {
+            "Egress": false,
+            "IpProtocol": "-1",
+            "IpRanges": [],
+            "Ipv6Ranges": [],
+            "PortRange": null,
+            "id": "d09569f9-341f-10f1-ee29-b2906f13c5f4",
+            "name": "sg-0bda7bad71c292f07_1",
+            "type": "AwsEc2IpPermission"
+          },
+          {
+            "Egress": true,
+            "IpProtocol": "-1",
+            "IpRanges": [
+              "0.0.0.0/0"
+            ],
+            "Ipv6Ranges": [],
+            "PortRange": null,
+            "id": "d09569f9-39ea-f818-3770-07e06130702e",
+            "name": "sg-0bda7bad71c292f07_2",
+            "type": "AwsEc2IpPermission"
+          }
+        ],
+        "asset_unique_id": "AwsEc2SecurityGroup_665539970410_d09569f9-c401-9174-8bb8-c0d29e707407",
+        "id": "d09569f9-3c88-fcd9-3941-521aec6ce5bc",
+        "name": "default",
+        "type": "AwsEc2SecurityGroup"
+      }
+    },
+    {
+      "key": "SensitiveDbEntries",
+      "alert_count": 98,
+      "value_kinds": {
+        "array_of_objects": 98
+      },
+      "sample_alert_id": "orca-989683",
+      "sample_element": {
+        "Count": 1,
+        "EntryName": "full_name:full_name,name:name",
+        "Identifier": "Personal Information",
+        "Sample": "[\"Name: olx**/*****\"]",
+        "id": "d09569f9-3882-7385-badf-ffd5c13d7695",
+        "name": "Personal Information",
+        "type": "SensitiveSqlDatabaseColumn"
+      }
+    },
+    {
+      "key": "HTTPOperations",
+      "alert_count": 97,
+      "value_kinds": {
+        "array_of_objects": 97
+      },
+      "sample_alert_id": "orca-984089",
+      "sample_element": {
+        "APISecFindings": [
+          {
+            "FindingContent": "{\"parameter\": \"Apache\"}",
+            "Timestamp": "2026-04-07T17:00:31+00:00",
+            "id": "d09569f9-32b4-0439-8466-000d19dd8d49",
+            "name": "response_header_exposing_implementation_details",
+            "type": "APISecFinding"
+          }
+        ],
+        "ApplicationExposure": "public",
+        "HTTPMethod": "GET",
+        "LastSeen": "2026-04-07T17:08:41+00:00",
+        "Previews": "[{\"Title\": null, \"CreatedAt\": \"2026-04-07T17:00:31.634Z\", \"Description\": null, \"ResponseContent\": null, \"ScreenshotResource\": \"d09569f9-c510-4e4c-ad5e-51ffb9347202/a962726bd07ddf6944063e6481cbdae0.jpeg\"}]",
+        "id": "d09569f9-3538-f20d-76e2-4565d44685d5",
+        "name": "GET /",
+        "type": "PathEndpointOperation"
+      }
+    },
+    {
+      "key": "ParameterGroups",
+      "alert_count": 95,
+      "value_kinds": {
+        "array_of_objects": 95
+      },
+      "sample_alert_id": "orca-348340",
+      "sample_element": {
+        "Arn": "arn:aws:rds:us-east-1:183337677225:pg:default.postgres14",
+        "IsSslRequired": false,
+        "asset_unique_id": "AwsRdsDbParameterGroup_183337677225_d09569f9-bf6e-a71d-62a5-8eadebe0e38b",
+        "id": "d09569f9-3a32-9cdf-1915-f6f78fd9181e",
+        "name": "default.postgres14",
+        "type": "AwsRdsDbParameterGroup"
+      }
+    },
+    {
+      "key": "Attachments",
+      "alert_count": 80,
+      "value_kinds": {
+        "array_of_objects": 80,
+        "array_empty": 8
+      },
+      "sample_alert_id": "orca-942239",
+      "sample_element": {
+        "Arn": "arn:aws:ec2:us-east-1:031515595491:instance/i-015f7e3eac55678f6",
+        "AwsState": "stopped",
+        "Image": null,
+        "asset_unique_id": "asg_031515595491_CodeDeploy_api.altimus.com.br_d-0M9895O6C",
+        "id": "d09569f9-34d6-2ebb-bf6e-2e781a650c8e",
+        "name": "api.altimus.com.br-asg",
+        "type": "AwsEc2Instance"
+      }
+    },
+    {
+      "key": "Stages",
+      "alert_count": 80,
+      "value_kinds": {
+        "array_of_objects": 80,
+        "array_empty": 13
+      },
+      "sample_alert_id": "orca-186317",
+      "sample_element": {
+        "asset_unique_id": "AwsApiGatewayStage_444914307613_d09569f9-a042-be49-dadb-c54f5484b556",
+        "id": "d09569f9-31f6-6f12-47bf-5cb2aee97ca4",
+        "name": "agile",
+        "type": "AwsApiGatewayStage"
+      }
+    },
+    {
+      "key": "GuardDutyFindings",
+      "alert_count": 53,
+      "value_kinds": {
+        "array_of_objects": 53
+      },
+      "sample_alert_id": "orca-186735",
+      "sample_element": {
+        "ActionDetails": "{\"AwsApiCallAction\": {\"Api\": \"ListWebACLs\", \"CallerType\": \"Remote IP\", \"ServiceName\": \"wafv2.amazonaws.com\", \"RemoteIpDetails\": {\"City\": {\"CityName\": \"Jaboat\\u00e3o dos Guararapes\"}, \"Country\": {\"CountryName\": \"Brazil\"}, \"GeoLocation\": {\"Lat\": -8.1136, \"Lon\": -35.0145}, \"IpAddressV4\": \"170.239.108.241\", \"Organization\": {\"Asn\": \"266348\", \"Isp\": \"Rede Unicon\", \"Org\": \"Rede Unicon\", \"AsnOrg\": \"REDE UNICON\"}}, \"AffectedResources\": {}}}",
+        "AlertType": "Discovery:IAMUser/AnomalousBehavior",
+        "Archived": false,
+        "Arn": "arn:aws:guardduty:us-east-1:444914307613:detector/96b2145f6c499d29b9e7d45b5c688b41/finding/fecdd9336742527b0389bd9b1579fca2",
+        "Description": "The IAM identity AWSReservedSSO_zap-navigation_8b9dbb8aac49c860 (AssumedRole:AROAWPFXVSIOTZBTEPPRA:helton.quintans-ext@olxbr.com) invoked the following APIs: \n- wafv2.amazonaws.com: ListWebACLs completed without error.\n- pricingplanmanager.amazonaws.com: ListSubscriptions completed without error.\n- freetier.amazonaws.com: GetAccountPlanState completed with other exceptions.\n\nOne or more API calls were invoked from 170.239.108.241 located in Brazil from Rede Unicon (ASN=266348).\n\nGuardDuty considers these invocations suspicious because:\n- The organization REDE UNICON (ASN=266348) has not been previously observed for this account.\n- The ListWebACLs , ListSubscriptions APIs have not been previously observed for this account.",
+        "EventFirstSeen": "2026-01-12T13:14:02+00:00",
+        "EventLastSeen": "2026-01-12T23:02:13+00:00",
+        "FindingCount": 356,
+        "GuardDutySeverity": 2,
+        "GuardDutySeverityLevel": "low",
+        "Title": "The user AssumedRole : AWSReservedSSO_zap-navigation_8b9dbb8aac49c860 is anomalously invoking APIs commonly used in Discovery tactics.",
+        "asset_unique_id": "AwsGuardDutyFinding_444914307613_d09569f9-f2e2-7c98-925f-c17ccc8926e2",
+        "id": "d09569f9-3dde-3f61-8346-c3b0e2c57bfb",
+        "name": "AnomalousBehavior_fecdd9336742527b0389bd9b1579fca2",
+        "type": "AwsGuardDutyFinding"
+      }
+    },
+    {
+      "key": "Ec2Instances",
+      "alert_count": 38,
+      "value_kinds": {
+        "array_of_objects": 38
+      },
+      "sample_alert_id": "orca-952025",
+      "sample_element": {
+        "Arn": "arn:aws:ec2:us-east-1:692859922230:instance/i-0c7d175deab8243bf",
+        "IamInstanceProfile": {
+          "asset_unique_id": "AwsIamInstanceProfile_692859922230_d09569f9-d941-c0c9-63b1-4600ed167402",
+          "id": "d09569f9-3a4c-361a-89a3-c2706c2998cb",
+          "name": "eks-64cd3c66-91c5-f60b-ccee-3b6de07bdd65",
+          "type": "AwsIamInstanceProfile"
+        },
+        "MetadataOptions": "{\"State\": \"applied\", \"HttpTokens\": \"required\", \"HttpEndpoint\": \"enabled\", \"HttpProtocolIpv6\": \"disabled\", \"InstanceMetadataTags\": \"disabled\", \"HttpPutResponseHopLimit\": 2}",
+        "asset_unique_id": "k8s_692859922230_cops-prod-platform",
+        "id": "d09569f9-30ed-046b-5ad4-68eb4821781b",
+        "name": "cops-prod-platform-system-202511121030-Node",
+        "type": "AwsEc2Instance"
+      }
+    },
+    {
+      "key": "TargetGroups",
+      "alert_count": 20,
+      "value_kinds": {
+        "array_of_objects": 20
+      },
+      "sample_alert_id": "orca-358148",
+      "sample_element": {
+        "Arn": "arn:aws:elasticloadbalancing:us-east-1:183337677225:targetgroup/TESTEFRONT2/6f192e453e39f49a",
+        "HealthyEc2InstancesCount": 0,
+        "TargetType": "instance",
+        "TotalEc2InstancesCount": 0,
+        "asset_unique_id": "AwsEc2Elbv2TargetGroup_183337677225_d09569f9-8856-498a-c46e-a3939384723f",
+        "id": "d09569f9-3d5a-e9d6-1c48-67e5e4891bf6",
+        "name": "TESTEFRONT2",
+        "type": "AwsEc2Elbv2TargetGroup"
+      }
+    },
+    {
+      "key": "AwsIamPasswordPolicy",
+      "alert_count": 19,
+      "value_kinds": {
+        "array_of_objects": 19
+      },
+      "sample_alert_id": "orca-947812",
+      "sample_element": {
+        "MaxPasswordAge": null,
+        "asset_unique_id": "AwsIamPasswordPolicy_862268118539_d09569f9-8beb-8183-ada5-705306b813b8",
+        "id": "d09569f9-3a47-258c-14ba-27ece6c3ce7c",
+        "name": "PasswordPolicy",
+        "type": "AwsIamPasswordPolicy"
+      }
+    },
+    {
+      "key": "Roles",
+      "alert_count": 12,
+      "value_kinds": {
+        "array_of_objects": 12
+      },
+      "sample_alert_id": "orca-941740",
+      "sample_element": {
+        "Arn": "arn:aws:iam::031515595491:role/EKS_Karpenter_Node_Role",
+        "EffectivePermissionsPolicy": {
+          "id": "d09569f9-3507-5935-a9f6-108bcb647b34",
+          "name": "arn:aws:iam::031515595491:role/EKS_Karpenter_Node_Role_EffectivePolicy",
+          "type": "AwsEffectivePermissionsPolicy"
+        },
+        "LastActiveTime": "2026-04-07T16:37:10+00:00",
+        "PermissionUsage": 0.015432098765432098,
+        "Policies": [
+          {
+            "IsPermissive": true,
+            "ManagedPolicies": [
+              {
+                "asset_unique_id": "AwsIamManagedPolicy_031515595491_d09569f9-b808-37c7-e295-ad166ad6d180",
+                "id": "d09569f9-37a7-e0de-6fa3-adc85a24f53d",
+                "name": "AdministratorAccess",
+                "type": "AwsIamManagedPolicy"
+              }
+            ],
+            "PermissiveActions": [
+              "Policy Attachment",
+              "Administrator Access",
+              "Pass Role",
+              "Assume Role",
+              "Policy Version",
+              "User Management",
+              "Administrative Privileges",
+              "Group Management"
+            ],
+            "PolicyBody": "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Action\": [\"*\"], \"Effect\": \"Allow\", \"Resource\": [\"*\"]}]}",
+            "PolicyId": "arn:aws:iam::aws:policy/AdministratorAccess",
+            "asset_unique_id": "AwsIamPolicy_031515595491_d09569f9-faf1-98a7-c69c-c9c463b6139e",
+            "id": "d09569f9-367d-ae63-a0ff-a2a79d7ec8f6",
+            "name": "AdministratorAccess",
+            "type": "AwsIamPolicy"
+          }
+        ],
+        "RoleId": "AROAQOVTZ2LR5S6TENGEF",
+        "asset_unique_id": "AwsIamRole_031515595491_d09569f9-166f-ed1f-3212-81d3b11e2c0c",
+        "id": "d09569f9-3bb0-2552-fa66-565e1f77a8f8",
+        "name": "EKS_Karpenter_Node_Role",
+        "type": "AwsIamRole"
+      }
+    },
+    {
+      "key": "AwsCloudTrail",
+      "alert_count": 12,
+      "value_kinds": {
+        "array_of_objects": 12
+      },
+      "sample_alert_id": "orca-947838",
+      "sample_element": {
+        "Arn": "arn:aws:cloudtrail:us-east-1:488495380471:trail/aws-controltower-BaselineCloudTrail",
+        "asset_unique_id": "AwsCloudTrail_862268118539_d09569f9-7e39-8647-ccd5-1fdb7cb69cfb",
+        "id": "d09569f9-3fa8-cc30-f7b1-204b988c644e",
+        "name": "aws-controltower-BaselineCloudTrail",
+        "type": "AwsCloudTrail"
+      }
+    },
+    {
+      "key": "Ec2EbsVolumes",
+      "alert_count": 11,
+      "value_kinds": {
+        "array_of_objects": 11
+      },
+      "sample_alert_id": "orca-940825",
+      "sample_element": {
+        "asset_unique_id": "AwsEc2EbsVolume_031515595491_d09569f9-eb1e-6ec3-7486-eb07796c0fae",
+        "id": "d09569f9-36e5-d1cd-0abc-4ce25d9afba3",
+        "name": "vol-0632b2b394f902cfe",
+        "type": "AwsEc2EbsVolume"
+      }
+    },
+    {
+      "key": "VpcList",
+      "alert_count": 10,
+      "value_kinds": {
+        "array_of_objects": 10
+      },
+      "sample_alert_id": "orca-925385",
+      "sample_element": {
+        "asset_unique_id": "AwsVpc_031515595491_d09569f9-98ae-f0f9-391d-d2000dc4b803",
+        "id": "d09569f9-3ce3-2692-50d6-24f3c8a6027e",
+        "name": "vpc-k8s",
+        "type": "AwsVpc"
+      }
+    },
+    {
+      "key": "Ec2EbsSnapshots",
+      "alert_count": 9,
+      "value_kinds": {
+        "array_of_objects": 9
+      },
+      "sample_alert_id": "orca-362237",
+      "sample_element": {
+        "CreationTime": "2026-04-06T09:27:26+00:00",
+        "IsPublic": false,
+        "SnapshotId": "snap-06270701d14d3f417",
+        "StorageEncrypted": false,
+        "asset_unique_id": "AwsEc2EbsSnapshot_183337677225_d09569f9-0ab5-3dc0-cefb-c80ce0e6c22c",
+        "id": "d09569f9-3562-8145-01e0-717cbdfe0c14",
+        "name": "snap-06270701d14d3f417",
+        "type": "AwsEc2EbsSnapshot"
+      }
+    },
+    {
+      "key": "SSHConfigurationFiles",
+      "alert_count": 9,
+      "value_kinds": {
+        "array_of_objects": 9
+      },
+      "sample_alert_id": "orca-958239",
+      "sample_element": {
+        "AuthenticationMethod": null,
+        "IsDir": false,
+        "PasswordAuthentication": true,
+        "Path": "/etc/ssh/sshd_config",
+        "id": "d09569f9-366f-316f-888a-dca7f7e2ecf9",
+        "name": "/etc/ssh/sshd_config",
+        "type": "SSHConfigurationFile"
+      }
+    },
+    {
+      "key": "public_keys",
+      "alert_count": 6,
+      "value_kinds": {
+        "array_of_objects": 6
+      },
+      "sample_alert_id": "orca-791485",
+      "sample_element": {
+        "asset_name": "olx-dataservices-backup",
+        "asset_unique_id": "storage_183337677225_olx-dataservices-backup",
+        "key_file_name": "/EmrCorebiScripts/.ssh/authorized_keys"
+      }
+    },
+    {
+      "key": "RunningServices",
+      "alert_count": 3,
+      "value_kinds": {
+        "array_of_objects": 3
+      },
+      "sample_alert_id": "orca-959686",
+      "sample_element": {
+        "id": "d09569f9-3e8e-2e0e-6b66-0067b8fca600",
+        "name": "Spooler",
+        "type": "RunningService"
+      }
+    },
+    {
+      "key": "AwsUser",
+      "alert_count": 3,
+      "value_kinds": {
+        "array_of_objects": 3
+      },
+      "sample_alert_id": "orca-926540",
+      "sample_element": {
+        "Arn": "arn:aws:iam::031515595491:user/crm-integrador-dev-hml",
+        "MfaActive": false,
+        "asset_unique_id": "AwsUser_031515595491_d09569f9-11ad-2107-6429-1252ebd89d56",
+        "id": "d09569f9-350c-c8d2-db3a-d3bcd9a632a1",
+        "name": "crm-integrador-dev-hml",
+        "type": "AwsUser"
+      }
+    },
+    {
+      "key": "LinuxOsPasswords",
+      "alert_count": 2,
+      "value_kinds": {
+        "array_of_objects": 2
+      },
+      "sample_alert_id": "orca-958236",
+      "sample_element": {
+        "MaskedPassword": "1q*****",
+        "Status": "Weak",
+        "Username": "meuuseradmin",
+        "id": "d09569f9-3aaf-628e-8f4b-a1e26c267dba",
+        "name": "meuuseradmin",
+        "type": "LinuxOsPassword"
+      }
+    },
+    {
+      "key": "EC2Instances",
+      "alert_count": 2,
+      "value_kinds": {
+        "array_of_objects": 2
+      },
+      "sample_alert_id": "orca-954520",
+      "sample_element": {
+        "Arn": "arn:aws:ec2:us-east-1:025517087168:instance/i-0e960771d76e0e554",
+        "asset_unique_id": "asg_025517087168_asg-consoleme-ecs",
+        "id": "d09569f9-37ca-74a9-0160-d6ea57ce3e51",
+        "name": "consoleme-ecs-cluster",
+        "type": "AwsEc2Instance"
+      }
+    },
+    {
+      "key": "NetworkInterfaces",
+      "alert_count": 2,
+      "value_kinds": {
+        "array_of_objects": 2
+      },
+      "sample_alert_id": "orca-955084",
+      "sample_element": {
+        "Description": "",
+        "NetworkInterfaceId": "eni-0e5a76fcfbf63d64c",
+        "PrivateIpAddress": "10.2.17.8",
+        "Status": "in-use",
+        "asset_unique_id": "AwsEc2NetworkInterface_665539970410_d09569f9-3bdd-0733-ab12-2afb7ea00746",
+        "id": "d09569f9-3ad4-7d20-18b8-e835a606c2b4",
+        "name": "HA",
+        "type": "AwsEc2NetworkInterface"
+      }
+    },
+    {
+      "key": "VpcSecurityGroups",
+      "alert_count": 1,
+      "value_kinds": {
+        "array_of_objects": 1
+      },
+      "sample_alert_id": "orca-366654",
+      "sample_element": {
+        "OwnerId": "183337677225",
+        "SgIpPermissions": [
+          {
+            "Egress": false,
+            "IpProtocol": "tcp",
+            "IpRanges": [
+              "10.0.0.0/8",
+              "10.15.0.0/16",
+              "10.11.0.0/16"
+            ],
+            "Ipv6Ranges": [],
+            "PortRange": "0-65535",
+            "id": "d09569f9-3703-e615-194e-7e4951c32423",
+            "name": "sg-dfeda3ab_1",
+            "type": "AwsEc2IpPermission"
+          }
+        ],
+        "Vpc": {
+          "asset_unique_id": "AwsVpc_183337677225_d09569f9-8918-f1b2-6137-7e0a07dac9a4",
+          "id": "d09569f9-3a64-9181-a7f7-c0d7e771b81d",
+          "name": "BN_PROD_VPC_VIRGINA(Principal)",
+          "type": "AwsVpc"
+        },
+        "asset_unique_id": "AwsEc2SecurityGroup_183337677225_d09569f9-7daa-6905-ef1a-27be5ab9af74",
+        "id": "d09569f9-35a5-9f0a-e486-cc4cae6401c4",
+        "name": "default",
+        "type": "AwsEc2SecurityGroup"
+      }
+    },
+    {
+      "key": "ShellHistorySuspiciousCommands",
+      "alert_count": 1,
+      "value_kinds": {
+        "array_of_objects": 1
+      },
+      "sample_alert_id": "orca-185311",
+      "sample_element": {
+        "Category": "Reconnaissance High",
+        "Command": "cat",
+        "CommandWithParameters": "sudo cat /etc/passwd",
+        "id": "d09569f9-3886-4e83-e0c6-0391db8d757f",
+        "name": "sudo cat /etc/passwd",
+        "type": "ShellHistorySuspiciousCommand"
+      }
+    },
+    {
+      "key": "Pua",
+      "alert_count": 1,
+      "value_kinds": {
+        "array_of_objects": 1
+      },
+      "sample_alert_id": "orca-958528",
+      "sample_element": {
+        "Content": {
+          "asset_unique_id": "vm_025517087168_i-09375dd073e97cabe",
+          "id": "d09569f9-395d-79cb-8eba-8b3dd9306baa",
+          "name": "ASMS_PoC",
+          "type": "AwsEc2Instance"
+        },
+        "id": "d09569f9-3a9a-d785-07d1-4d87ae0444c6",
+        "name": "Application.Generic.4267060",
+        "type": "Pua"
+      }
+    },
+    {
+      "key": "SnsSubscriptions",
+      "alert_count": 1,
+      "value_kinds": {
+        "array_of_objects": 1
+      },
+      "sample_alert_id": "orca-132612",
+      "sample_element": {
+        "Endpoint": "arn:aws:lambda:us-east-1:444914307613:function:aws-deregister",
+        "Protocol": "lambda",
+        "SubscriptionArn": "arn:aws:sns:us-east-1:444914307613:zabbix-terminate:11f627db-849d-419e-9b0b-38a00516cadb",
+        "asset_unique_id": "AwsSnsSubscription_444914307613_d09569f9-6195-8892-2491-b037091e1e72",
+        "id": "d09569f9-39fb-a831-7a7a-d42622c0f6d5",
+        "name": "arn:aws:sns:us-east-1:444914307613:zabbix-terminate:11f627db-849d-419e-9b0b-38a00516cadb",
+        "type": "AwsSnsSubscription"
+      }
+    },
+    {
+      "key": "DataLakeResources",
+      "alert_count": 1,
+      "value_kinds": {
+        "array_of_objects": 1
+      },
+      "sample_alert_id": "orca-369797",
+      "sample_element": {
+        "Arn": "arn:aws:s3:::olx-data-lake",
+        "S3Bucket": {
+          "asset_unique_id": "storage_183337677225_olx-data-lake",
+          "id": "d09569f9-35d0-321c-826b-249f2d70f739",
+          "name": "olx-data-lake",
+          "type": "AwsS3Bucket"
+        },
+        "asset_unique_id": "AwsLakeFormationResource_183337677225_d09569f9-cc45-53f4-1122-c6433f03c423",
+        "id": "d09569f9-3be9-370e-0b81-9f65abb299ba",
+        "name": "olx-data-lake",
+        "type": "AwsLakeFormationResource"
+      }
+    },
+    {
+      "key": "ResourceRecordSets",
+      "alert_count": 1,
+      "value_kinds": {
+        "array_of_objects": 1
+      },
+      "sample_alert_id": "orca-942407",
+      "sample_element": {
+        "AliasTarget": "{\"DNSName\": \"d1o0e3ap1fba6o.cloudfront.net.\", \"HostedZoneId\": \"Z2FDTNDATAQYW2\", \"EvaluateTargetHealth\": false}",
+        "RecordType": "A",
+        "ResourceRecordValues": [],
+        "RoutingPolicy": "Simple",
+        "id": "d09569f9-352e-a176-0ee8-c75d77c132fb",
+        "name": "olx-ape.altimus.com.br.",
+        "type": "AwsRoute53ResourceRecordSet"
+      }
+    }
+  ],
+  "other_keys_count": 319,
+  "other_keys": [
+    {
+      "key": "AccessConfig",
+      "value_kinds": {
+        "str": 1
+      }
+    },
+    {
+      "key": "AccessControlMethod",
+      "value_kinds": {
+        "str": 1
+      }
+    },
+    {
+      "key": "AccessKey1Active",
+      "value_kinds": {
+        "bool": 101
+      }
+    },
+    {
+      "key": "AccessKey1Id",
+      "value_kinds": {
+        "str": 79,
+        "NoneType": 12
+      }
+    },
+    {
+      "key": "AccessKey1LastRotated",
+      "value_kinds": {
+        "str": 78,
+        "NoneType": 12
+      }
+    },
+    {
+      "key": "AccessKey1LastUsedDate",
+      "value_kinds": {
+        "str": 38,
+        "NoneType": 55
+      }
+    },
+    {
+      "key": "AccessKey1LastUsedRegion",
+      "value_kinds": {
+        "str": 34,
+        "NoneType": 53
+      }
+    },
+    {
+      "key": "AccessKey1LastUsedService",
+      "value_kinds": {
+        "str": 34,
+        "NoneType": 53
+      }
+    },
+    {
+      "key": "AccessKey1RecentlyRotated",
+      "value_kinds": {
+        "bool": 75,
+        "NoneType": 12
+      }
+    },
+    {
+      "key": "AccessKey1RecentlyUsed",
+      "value_kinds": {
+        "bool": 92
+      }
+    },
+    {
+      "key": "AccessKey2Active",
+      "value_kinds": {
+        "bool": 101
+      }
+    },
+    {
+      "key": "AccessKey2Id",
+      "value_kinds": {
+        "NoneType": 35,
+        "str": 56
+      }
+    },
+    {
+      "key": "AccessKey2LastRotated",
+      "value_kinds": {
+        "NoneType": 34,
+        "str": 56
+      }
+    },
+    {
+      "key": "AccessKey2LastUsedDate",
+      "value_kinds": {
+        "NoneType": 54,
+        "str": 39
+      }
+    },
+    {
+      "key": "AccessKey2LastUsedRegion",
+      "value_kinds": {
+        "NoneType": 50,
+        "str": 37
+      }
+    },
+    {
+      "key": "AccessKey2LastUsedService",
+      "value_kinds": {
+        "NoneType": 50,
+        "str": 37
+      }
+    },
+    {
+      "key": "AccessKey2RecentlyRotated",
+      "value_kinds": {
+        "NoneType": 33,
+        "bool": 54
+      }
+    },
+    {
+      "key": "AccessKey2RecentlyUsed",
+      "value_kinds": {
+        "bool": 92
+      }
+    },
+    {
+      "key": "AccessPolicy",
+      "value_kinds": {
+        "object": 51
+      }
+    },
+    {
+      "key": "AccessTime",
+      "value_kinds": {
+        "str": 1
+      }
+    },
+    {
+      "key": "AclOwnerID",
+      "value_kinds": {
+        "str": 60
+      }
+    },
+    {
+      "key": "AdvancedSecurityEnabled",
+      "value_kinds": {
+        "bool": 4
+      }
+    },
+    {
+      "key": "AliasArn",
+      "value_kinds": {
+        "str": 59
+      }
+    },
+    {
+      "key": "AllocatedDiskSize",
+      "value_kinds": {
+        "int": 40
+      }
+    },
+    {
+      "key": "AllowsCrossAccountAccess",
+      "value_kinds": {
+        "bool": 1811
+      }
+    },
+    {
+      "key": "AllowsUnknownCrossAccounts",
+      "value_kinds": {
+        "bool": 1811
+      }
+    },
+    {
+      "key": "ApiId",
+      "value_kinds": {
+        "str": 270
+      }
+    },
+    {
+      "key": "ApiKeyRequired",
+      "value_kinds": {
+        "bool": 23
+      }
+    },
+    {
+      "key": "ApiKeySource",
+      "value_kinds": {
+        "str": 93
+      }
+    },
+    {
+      "key": "ApplicationExposure",
+      "value_kinds": {
+        "str": 238,
+        "NoneType": 1
+      }
+    },
+    {
+      "key": "Arn",
+      "value_kinds": {
+        "str": 14613
+      }
+    },
+    {
+      "key": "AssignPublicIp",
+      "value_kinds": {
+        "str": 7
+      }
+    },
+    {
+      "key": "AssumeRolePolicy",
+      "value_kinds": {
+        "object": 2154
+      }
+    },
+    {
+      "key": "AttachmentCount",
+      "value_kinds": {
+        "int": 71
+      }
+    },
+    {
+      "key": "AuthType",
+      "value_kinds": {
+        "str": 2
+      }
+    },
+    {
+      "key": "AuthorizationType",
+      "value_kinds": {
+        "str": 23
+      }
+    },
+    {
+      "key": "BackupRetentionPeriod",
+      "value_kinds": {
+        "int": 3
+      }
+    },
+    {
+      "key": "BrokerState",
+      "value_kinds": {
+        "str": 1
+      }
+    },
+    {
+      "key": "BucketName",
+      "value_kinds": {
+        "str": 13
+      }
+    },
+    {
+      "key": "BucketPolicy",
+      "value_kinds": {
+        "object": 1143,
+        "NoneType": 824
+      }
+    },
+    {
+      "key": "BucketVersioningStatus",
+      "value_kinds": {
+        "str": 2
+      }
+    },
+    {
+      "key": "CVECount",
+      "value_kinds": {
+        "str": 106
+      }
+    },
+    {
+      "key": "CatalogEncryptionMode",
+      "value_kinds": {
+        "str": 42
+      }
+    },
+    {
+      "key": "Cert1Active",
+      "value_kinds": {
+        "bool": 5
+      }
+    },
+    {
+      "key": "Cert2Active",
+      "value_kinds": {
+        "bool": 5
+      }
+    },
+    {
+      "key": "CertificateType",
+      "value_kinds": {
+        "NoneType": 39,
+        "str": 5
+      }
+    },
+    {
+      "key": "CloudFrontOriginAccessControls",
+      "value_kinds": {
+        "NoneType": 485,
+        "array_empty": 103
+      }
+    },
+    {
+      "key": "CloudProvider",
+      "value_kinds": {
+        "str": 34
+      }
+    },
+    {
+      "key": "CloudProviderId",
+      "value_kinds": {
+        "str": 34
+      }
+    },
+    {
+      "key": "Cluster",
+      "value_kinds": {
+        "NoneType": 356,
+        "object": 102
+      }
+    },
+    {
+      "key": "Compatibilities",
+      "value_kinds": {
+        "array_of_scalars": 7
+      }
+    },
+    {
+      "key": "ConsoleUrlLink",
+      "value_kinds": {
+        "NoneType": 2743,
+        "str": 10823
+      }
+    },
+    {
+      "key": "Content",
+      "value_kinds": {
+        "object": 199
+      }
+    },
+    {
+      "key": "CreatedByPrincipal",
+      "value_kinds": {
+        "str": 190
+      }
+    },
+    {
+      "key": "CreatedFromSnapshotId",
+      "value_kinds": {
+        "str": 97
+      }
+    },
+    {
+      "key": "CreatedFromVolume",
+      "value_kinds": {
+        "NoneType": 12
+      }
+    },
+    {
+      "key": "CreationTime",
+      "value_kinds": {
+        "NoneType": 1887,
+        "str": 2481
+      }
+    },
+    {
+      "key": "CrossAccountFindings",
+      "value_kinds": {
+        "array_of_scalars": 19
+      }
+    },
+    {
+      "key": "Database",
+      "value_kinds": {
+        "object": 98
+      }
+    },
+    {
+      "key": "DaysToExpire",
+      "value_kinds": {
+        "int": 44
+      }
+    },
+    {
+      "key": "DbInstance",
+      "value_kinds": {
+        "object": 1381,
+        "NoneType": 398
+      }
+    },
+    {
+      "key": "DbInstanceStatus",
+      "value_kinds": {
+        "str": 1
+      }
+    },
+    {
+      "key": "DbName",
+      "value_kinds": {
+        "str": 54,
+        "NoneType": 50
+      }
+    },
+    {
+      "key": "DbSubnetGroup",
+      "value_kinds": {
+        "str": 94,
+        "NoneType": 8
+      }
+    },
+    {
+      "key": "DbiResourceId",
+      "value_kinds": {
+        "str": 94,
+        "NoneType": 8
+      }
+    },
+    {
+      "key": "DefaultPolicy",
+      "value_kinds": {
+        "object": 83
+      }
+    },
+    {
+      "key": "DefaultRootObject",
+      "value_kinds": {
+        "str": 588
+      }
+    },
+    {
+      "key": "DeletionProtection",
+      "value_kinds": {
+        "bool": 480
+      }
+    },
+    {
+      "key": "Description",
+      "value_kinds": {
+        "str": 2318
+      }
+    },
+    {
+      "key": "DesiredCount",
+      "value_kinds": {
+        "int": 7
+      }
+    },
+    {
+      "key": "DestinationCidrBlock",
+      "value_kinds": {
+        "str": 139,
+        "NoneType": 1
+      }
+    },
+    {
+      "key": "DirectInternetAccess",
+      "value_kinds": {
+        "bool": 26
+      }
+    },
+    {
+      "key": "DisableExecuteApiEndpoint",
+      "value_kinds": {
+        "bool": 93
+      }
+    },
+    {
+      "key": "DisplayName",
+      "value_kinds": {
+        "str": 1
+      }
+    },
+    {
+      "key": "DistributionInfoSite",
+      "value_kinds": {
+        "str": 2042
+      }
+    },
+    {
+      "key": "DistributionName",
+      "value_kinds": {
+        "str": 2045
+      }
+    },
+    {
+      "key": "DistributionVersion",
+      "value_kinds": {
+        "str": 2045
+      }
+    },
+    {
+      "key": "DistroCategory",
+      "value_kinds": {
+        "str": 106
+      }
+    },
+    {
+      "key": "DomainId",
+      "value_kinds": {
+        "str": 15
+      }
+    },
+    {
+      "key": "DomainName",
+      "value_kinds": {
+        "str": 56
+      }
+    },
+    {
+      "key": "Ec2Instance",
+      "value_kinds": {
+        "object": 7
+      }
+    },
+    {
+      "key": "EffectivePermissionsPolicy",
+      "value_kinds": {
+        "object": 2269
+      }
+    },
+    {
+      "key": "ElasticsearchVersion",
+      "value_kinds": {
+        "str": 3
+      }
+    },
+    {
+      "key": "ElbType",
+      "value_kinds": {
+        "str": 255
+      }
+    },
+    {
+      "key": "Enabled",
+      "value_kinds": {
+        "bool": 853
+      }
+    },
+    {
+      "key": "Encrypted",
+      "value_kinds": {
+        "bool": 57
+      }
+    },
+    {
+      "key": "EncryptionAtRestEnabled",
+      "value_kinds": {
+        "bool": 213
+      }
+    },
+    {
+      "key": "EncryptionInTransitClientBroker",
+      "value_kinds": {
+        "str": 2
+      }
+    },
+    {
+      "key": "EncryptionInTransitEnabled",
+      "value_kinds": {
+        "bool": 212
+      }
+    },
+    {
+      "key": "EncryptionKey",
+      "value_kinds": {
+        "object": 11,
+        "NoneType": 22
+      }
+    },
+    {
+      "key": "EncryptionType",
+      "value_kinds": {
+        "str": 35
+      }
+    },
+    {
+      "key": "Endpoint",
+      "value_kinds": {
+        "str": 400
+      }
+    },
+    {
+      "key": "EndpointConfiguration",
+      "value_kinds": {
+        "str": 84
+      }
+    },
+    {
+      "key": "EndpointEnforceHttps",
+      "value_kinds": {
+        "bool": 3
+      }
+    },
+    {
+      "key": "EndpointPort",
+      "value_kinds": {
+        "int": 254
+      }
+    },
+    {
+      "key": "EndpointType",
+      "value_kinds": {
+        "str": 26
+      }
+    },
+    {
+      "key": "Engine",
+      "value_kinds": {
+        "str": 3760
+      }
+    },
+    {
+      "key": "EngineMode",
+      "value_kinds": {
+        "str": 487
+      }
+    },
+    {
+      "key": "EngineName",
+      "value_kinds": {
+        "str": 26
+      }
+    },
+    {
+      "key": "EngineType",
+      "value_kinds": {
+        "str": 1
+      }
+    },
+    {
+      "key": "EngineVersion",
+      "value_kinds": {
+        "str": 332
+      }
+    },
+    {
+      "key": "EnvVars",
+      "value_kinds": {
+        "str": 81,
+        "NoneType": 1
+      }
+    },
+    {
+      "key": "EventSelectors",
+      "value_kinds": {
+        "array_empty": 8
+      }
+    },
+    {
+      "key": "ExpirationDate",
+      "value_kinds": {
+        "str": 44
+      }
+    },
+    {
+      "key": "ExpirePasswords",
+      "value_kinds": {
+        "bool": 11,
+        "NoneType": 1
+      }
+    },
+    {
+      "key": "Exposure",
+      "value_kinds": {
+        "str": 5158,
+        "NoneType": 1
+      }
+    },
+    {
+      "key": "File",
+      "value_kinds": {
+        "str": 174
+      }
+    },
+    {
+      "key": "FileType",
+      "value_kinds": {
+        "str": 1
+      }
+    },
+    {
+      "key": "FunctionRole",
+      "value_kinds": {
+        "object": 347,
+        "NoneType": 84
+      }
+    },
+    {
+      "key": "FunctionRuntime",
+      "value_kinds": {
+        "object": 153
+      }
+    },
+    {
+      "key": "Group",
+      "value_kinds": {
+        "str": 1
+      }
+    },
+    {
+      "key": "GroupId",
+      "value_kinds": {
+        "str": 2318
+      }
+    },
+    {
+      "key": "GroupName",
+      "value_kinds": {
+        "str": 2
+      }
+    },
+    {
+      "key": "HardwareMfaActive",
+      "value_kinds": {
+        "NoneType": 12
+      }
+    },
+    {
+      "key": "HasMalwareWithHighConfidence",
+      "value_kinds": {
+        "bool": 106
+      }
+    },
+    {
+      "key": "Host",
+      "value_kinds": {
+        "str": 239
+      }
+    },
+    {
+      "key": "HostSocket",
+      "value_kinds": {
+        "str": 5
+      }
+    },
+    {
+      "key": "HostedZoneId",
+      "value_kinds": {
+        "str": 1
+      }
+    },
+    {
+      "key": "IAMDatabaseAuthenticationEnabled",
+      "value_kinds": {
+        "bool": 193
+      }
+    },
+    {
+      "key": "IamGroups",
+      "value_kinds": {
+        "array_empty": 1
+      }
+    },
+    {
+      "key": "IamRole",
+      "value_kinds": {
+        "object": 6,
+        "NoneType": 1
+      }
+    },
+    {
+      "key": "Image",
+      "value_kinds": {
+        "object": 7
+      }
+    },
+    {
+      "key": "ImdsVersion",
+      "value_kinds": {
+        "str": 26
+      }
+    },
+    {
+      "key": "InstanceId",
+      "value_kinds": {
+        "str": 10
+      }
+    },
+    {
+      "key": "InstanceProfile",
+      "value_kinds": {
+        "object": 15
+      }
+    },
+    {
+      "key": "InstanceProfileArnList",
+      "value_kinds": {
+        "array_empty": 2068,
+        "array_of_scalars": 86
+      }
+    },
+    {
+      "key": "InstanceProfileId",
+      "value_kinds": {
+        "str": 10
+      }
+    },
+    {
+      "key": "InstanceSsmComplianceStatus",
+      "value_kinds": {
+        "str": 11
+      }
+    },
+    {
+      "key": "InstanceType",
+      "value_kinds": {
+        "str": 3
+      }
+    },
+    {
+      "key": "Inventory",
+      "value_kinds": {
+        "object": 98
+      }
+    },
+    {
+      "key": "IsAssociatePublicIpAddressEnabled",
+      "value_kinds": {
+        "bool": 190
+      }
+    },
+    {
+      "key": "IsCrossAccount",
+      "value_kinds": {
+        "bool": 19
+      }
+    },
+    {
+      "key": "IsDir",
+      "value_kinds": {
+        "bool": 50
+      }
+    },
+    {
+      "key": "IsLogging",
+      "value_kinds": {
+        "bool": 1
+      }
+    },
+    {
+      "key": "IsMultiRegionTrail",
+      "value_kinds": {
+        "bool": 1
+      }
+    },
+    {
+      "key": "IsPermissive",
+      "value_kinds": {
+        "bool": 13
+      }
+    },
+    {
+      "key": "IsPublic",
+      "value_kinds": {
+        "bool": 70
+      }
+    },
+    {
+      "key": "IsReadOnlyRootFilesystem",
+      "value_kinds": {
+        "bool": 7
+      }
+    },
+    {
+      "key": "IsRootAccessEnabled",
+      "value_kinds": {
+        "bool": 26
+      }
+    },
+    {
+      "key": "IsSslEnabled",
+      "value_kinds": {
+        "bool": 26
+      }
+    },
+    {
+      "key": "IsSsmManaged",
+      "value_kinds": {
+        "bool": 8
+      }
+    },
+    {
+      "key": "IsVersioningEnabled",
+      "value_kinds": {
+        "bool": 734
+      }
+    },
+    {
+      "key": "IssueDate",
+      "value_kinds": {
+        "str": 44
+      }
+    },
+    {
+      "key": "IssuerName",
+      "value_kinds": {
+        "str": 44
+      }
+    },
+    {
+      "key": "ItemCount",
+      "value_kinds": {
+        "int": 603
+      }
+    },
+    {
+      "key": "KeyState",
+      "value_kinds": {
+        "str": 59
+      }
+    },
+    {
+      "key": "KmsKey",
+      "value_kinds": {
+        "object": 2386
+      }
+    },
+    {
+      "key": "LastActiveTime",
+      "value_kinds": {
+        "str": 1872,
+        "NoneType": 282
+      }
+    },
+    {
+      "key": "LastPasswordChange",
+      "value_kinds": {
+        "str": 21,
+        "NoneType": 19
+      }
+    },
+    {
+      "key": "LatestEngineVersion",
+      "value_kinds": {
+        "str": 1
+      }
+    },
+    {
+      "key": "LatestRestorableTime",
+      "value_kinds": {
+        "str": 2
+      }
+    },
+    {
+      "key": "LaunchConfigurationName",
+      "value_kinds": {
+        "NoneType": 11,
+        "str": 13
+      }
+    },
+    {
+      "key": "LaunchTemplateId",
+      "value_kinds": {
+        "str": 188
+      }
+    },
+    {
+      "key": "LifecycleConfiguration",
+      "value_kinds": {
+        "str": 334,
+        "NoneType": 1476
+      }
+    },
+    {
+      "key": "LocalName",
+      "value_kinds": {
+        "str": 174
+      }
+    },
+    {
+      "key": "LogGroup",
+      "value_kinds": {
+        "object": 51,
+        "NoneType": 12
+      }
+    },
+    {
+      "key": "LogGroupName",
+      "value_kinds": {
+        "str": 12,
+        "NoneType": 1
+      }
+    },
+    {
+      "key": "LoggingTypes",
+      "value_kinds": {
+        "str": 1
+      }
+    },
+    {
+      "key": "MapPublicIpOnLaunch",
+      "value_kinds": {
+        "bool": 289
+      }
+    },
+    {
+      "key": "MasterUsername",
+      "value_kinds": {
+        "str": 102
+      }
+    },
+    {
+      "key": "MatchedCVEs",
+      "value_kinds": {
+        "int": 106
+      }
+    },
+    {
+      "key": "MaxCVSSScore",
+      "value_kinds": {
+        "float": 106
+      }
+    },
+    {
+      "key": "Md5",
+      "value_kinds": {
+        "str": 1
+      }
+    },
+    {
+      "key": "MetadataOptions",
+      "value_kinds": {
+        "str": 194
+      }
+    },
+    {
+      "key": "MfaActive",
+      "value_kinds": {
+        "bool": 19
+      }
+    },
+    {
+      "key": "MinimumCompressionSize",
+      "value_kinds": {
+        "NoneType": 93
+      }
+    },
+    {
+      "key": "Misconfiguration",
+      "value_kinds": {
+        "str": 38
+      }
+    },
+    {
+      "key": "ModificationTime",
+      "value_kinds": {
+        "str": 1
+      }
+    },
+    {
+      "key": "Mounts",
+      "value_kinds": {
+        "array_of_scalars": 5
+      }
+    },
+    {
+      "key": "NetworkAclId",
+      "value_kinds": {
+        "str": 500
+      }
+    },
+    {
+      "key": "NetworkInterface",
+      "value_kinds": {
+        "object": 247
+      }
+    },
+    {
+      "key": "NodeToNodeEncryptionEnabled",
+      "value_kinds": {
+        "bool": 3
+      }
+    },
+    {
+      "key": "NotebookInstanceStatus",
+      "value_kinds": {
+        "str": 26
+      }
+    },
+    {
+      "key": "ObjectOwnership",
+      "value_kinds": {
+        "NoneType": 328,
+        "str": 37
+      }
+    },
+    {
+      "key": "Origin",
+      "value_kinds": {
+        "str": 140
+      }
+    },
+    {
+      "key": "OriginAccessIdentities",
+      "value_kinds": {
+        "array_empty": 487,
+        "array_of_scalars": 101
+      }
+    },
+    {
+      "key": "OriginProtocolPolicies",
+      "value_kinds": {
+        "array_of_scalars": 40
+      }
+    },
+    {
+      "key": "OriginSslProtocols",
+      "value_kinds": {
+        "array_of_scalars": 40
+      }
+    },
+    {
+      "key": "OsEndOfSupport",
+      "value_kinds": {
+        "str": 2042
+      }
+    },
+    {
+      "key": "OsSupportInfoSite",
+      "value_kinds": {
+        "str": 2042
+      }
+    },
+    {
+      "key": "OwnerId",
+      "value_kinds": {
+        "str": 2
+      }
+    },
+    {
+      "key": "ParameterSecretType",
+      "value_kinds": {
+        "str": 712
+      }
+    },
+    {
+      "key": "ParameterType",
+      "value_kinds": {
+        "str": 712
+      }
+    },
+    {
+      "key": "PasswordEnabled",
+      "value_kinds": {
+        "bool": 52
+      }
+    },
+    {
+      "key": "PasswordNextRotation",
+      "value_kinds": {
+        "NoneType": 3
+      }
+    },
+    {
+      "key": "PasswordRecentlyUsed",
+      "value_kinds": {
+        "bool": 48
+      }
+    },
+    {
+      "key": "Path",
+      "value_kinds": {
+        "str": 1609
+      }
+    },
+    {
+      "key": "PermissionMask",
+      "value_kinds": {
+        "int": 1
+      }
+    },
+    {
+      "key": "PermissionUsage",
+      "value_kinds": {
+        "float": 1420,
+        "NoneType": 693
+      }
+    },
+    {
+      "key": "PermissiveActions",
+      "value_kinds": {
+        "array_of_scalars": 13
+      }
+    },
+    {
+      "key": "PermittedCloudAccounts",
+      "value_kinds": {
+        "array_of_scalars": 6
+      }
+    },
+    {
+      "key": "PiiEnvVars",
+      "value_kinds": {
+        "str": 1,
+        "NoneType": 1
+      }
+    },
+    {
+      "key": "PolicyBody",
+      "value_kinds": {
+        "str": 28
+      }
+    },
+    {
+      "key": "PolicyId",
+      "value_kinds": {
+        "str": 28
+      }
+    },
+    {
+      "key": "PolicyVersion",
+      "value_kinds": {
+        "str": 48
+      }
+    },
+    {
+      "key": "Port",
+      "value_kinds": {
+        "int": 201
+      }
+    },
+    {
+      "key": "PublicAccessBlock",
+      "value_kinds": {
+        "NoneType": 102,
+        "str": 399
+      }
+    },
+    {
+      "key": "PublicCacheBehaviors",
+      "value_kinds": {
+        "array_of_scalars": 3
+      }
+    },
+    {
+      "key": "PublicDnsName",
+      "value_kinds": {
+        "str": 10
+      }
+    },
+    {
+      "key": "PublicIpAddress",
+      "value_kinds": {
+        "str": 14,
+        "NoneType": 2
+      }
+    },
+    {
+      "key": "PublicUrl",
+      "value_kinds": {
+        "str": 4519,
+        "NoneType": 16
+      }
+    },
+    {
+      "key": "RLPositivity",
+      "value_kinds": {
+        "str": 1
+      }
+    },
+    {
+      "key": "Region",
+      "value_kinds": {
+        "str": 2875
+      }
+    },
+    {
+      "key": "ResourcePolicy",
+      "value_kinds": {
+        "NoneType": 133,
+        "object": 237
+      }
+    },
+    {
+      "key": "ResourceType",
+      "value_kinds": {
+        "str": 15
+      }
+    },
+    {
+      "key": "ReturnConnectionPasswordEncrypted",
+      "value_kinds": {
+        "bool": 42
+      }
+    },
+    {
+      "key": "RoleArn",
+      "value_kinds": {
+        "NoneType": 21,
+        "object": 5
+      }
+    },
+    {
+      "key": "RoleId",
+      "value_kinds": {
+        "str": 2260
+      }
+    },
+    {
+      "key": "RoleName",
+      "value_kinds": {
+        "NoneType": 106
+      }
+    },
+    {
+      "key": "RootVolumeEncryptionEnabled",
+      "value_kinds": {
+        "NoneType": 4
+      }
+    },
+    {
+      "key": "Route53Domain",
+      "value_kinds": {
+        "NoneType": 1
+      }
+    },
+    {
+      "key": "RouteKey",
+      "value_kinds": {
+        "str": 23
+      }
+    },
+    {
+      "key": "RoutingHttpDesync",
+      "value_kinds": {
+        "str": 1
+      }
+    },
+    {
+      "key": "RoutingHttpDropHeader",
+      "value_kinds": {
+        "bool": 19
+      }
+    },
+    {
+      "key": "RunningCount",
+      "value_kinds": {
+        "int": 7
+      }
+    },
+    {
+      "key": "S3Bucket",
+      "value_kinds": {
+        "object": 1
+      }
+    },
+    {
+      "key": "SSEStatus",
+      "value_kinds": {
+        "NoneType": 297
+      }
+    },
+    {
+      "key": "Scheme",
+      "value_kinds": {
+        "str": 6
+      }
+    },
+    {
+      "key": "SecretEnvVars",
+      "value_kinds": {
+        "str": 109,
+        "NoneType": 10
+      }
+    },
+    {
+      "key": "SecurityConfiguration",
+      "value_kinds": {
+        "object": 1
+      }
+    },
+    {
+      "key": "ServerType",
+      "value_kinds": {
+        "str": 2
+      }
+    },
+    {
+      "key": "Service",
+      "value_kinds": {
+        "str": 38
+      }
+    },
+    {
+      "key": "Settings",
+      "value_kinds": {
+        "str": 26
+      }
+    },
+    {
+      "key": "Sha1",
+      "value_kinds": {
+        "str": 1
+      }
+    },
+    {
+      "key": "Sha256",
+      "value_kinds": {
+        "str": 1
+      }
+    },
+    {
+      "key": "SharedCloudAccounts",
+      "value_kinds": {
+        "array_of_scalars": 70
+      }
+    },
+    {
+      "key": "Size",
+      "value_kinds": {
+        "int": 1
+      }
+    },
+    {
+      "key": "SnapshotId",
+      "value_kinds": {
+        "str": 12
+      }
+    },
+    {
+      "key": "SnapshotType",
+      "value_kinds": {
+        "str": 2295
+      }
+    },
+    {
+      "key": "Source",
+      "value_kinds": {
+        "str": 44
+      }
+    },
+    {
+      "key": "State",
+      "value_kinds": {
+        "NoneType": 1887,
+        "str": 632
+      }
+    },
+    {
+      "key": "Status",
+      "value_kinds": {
+        "str": 1375
+      }
+    },
+    {
+      "key": "StorageEncrypted",
+      "value_kinds": {
+        "bool": 1802
+      }
+    },
+    {
+      "key": "StreamStatus",
+      "value_kinds": {
+        "str": 33
+      }
+    },
+    {
+      "key": "SubType",
+      "value_kinds": {
+        "str": 239
+      }
+    },
+    {
+      "key": "SupportedEngineVersion",
+      "value_kinds": {
+        "object": 288
+      }
+    },
+    {
+      "key": "TableId",
+      "value_kinds": {
+        "str": 603
+      }
+    },
+    {
+      "key": "TableStatus",
+      "value_kinds": {
+        "str": 603
+      }
+    },
+    {
+      "key": "TotalVulnerabilitiesFound",
+      "value_kinds": {
+        "int": 106
+      }
+    },
+    {
+      "key": "TracingConfig",
+      "value_kinds": {
+        "str": 57
+      }
+    },
+    {
+      "key": "UnknownPermittedCloudAccounts",
+      "value_kinds": {
+        "array_of_scalars": 6
+      }
+    },
+    {
+      "key": "UnknownSharedCloudAccounts",
+      "value_kinds": {
+        "array_of_scalars": 70
+      }
+    },
+    {
+      "key": "UpTime",
+      "value_kinds": {
+        "NoneType": 1985,
+        "str": 57
+      }
+    },
+    {
+      "key": "UpdatedTime",
+      "value_kinds": {
+        "str": 2045,
+        "NoneType": 431
+      }
+    },
+    {
+      "key": "Url",
+      "value_kinds": {
+        "str": 26
+      }
+    },
+    {
+      "key": "UserId",
+      "value_kinds": {
+        "NoneType": 2,
+        "int": 1
+      }
+    },
+    {
+      "key": "UserName",
+      "value_kinds": {
+        "str": 9,
+        "NoneType": 2
+      }
+    },
+    {
+      "key": "UserVolumeEncryptionEnabled",
+      "value_kinds": {
+        "NoneType": 4
+      }
+    },
+    {
+      "key": "VTDetection",
+      "value_kinds": {
+        "NoneType": 1
+      }
+    },
+    {
+      "key": "Value",
+      "value_kinds": {
+        "str": 712
+      }
+    },
+    {
+      "key": "ViewerCertificate",
+      "value_kinds": {
+        "str": 601
+      }
+    },
+    {
+      "key": "VolumeId",
+      "value_kinds": {
+        "str": 97
+      }
+    },
+    {
+      "key": "VolumeType",
+      "value_kinds": {
+        "str": 97
+      }
+    },
+    {
+      "key": "Vpc",
+      "value_kinds": {
+        "object": 3272,
+        "NoneType": 41
+      }
+    },
+    {
+      "key": "VpcEndpointId",
+      "value_kinds": {
+        "str": 141
+      }
+    },
+    {
+      "key": "VpcEndpointType",
+      "value_kinds": {
+        "str": 141
+      }
+    },
+    {
+      "key": "VpcId",
+      "value_kinds": {
+        "str": 55
+      }
+    },
+    {
+      "key": "VpcPeeringConnection",
+      "value_kinds": {
+        "object": 96
+      }
+    },
+    {
+      "key": "Website",
+      "value_kinds": {
+        "str": 1
+      }
+    },
+    {
+      "key": "WindowsOsPasswords",
+      "value_kinds": {
+        "array_empty": 2
+      }
+    },
+    {
+      "key": "WorkspaceId",
+      "value_kinds": {
+        "str": 8
+      }
+    },
+    {
+      "key": "active_verification_additional_info",
+      "value_kinds": {
+        "object": 350
+      }
+    },
+    {
+      "key": "active_verification_status",
+      "value_kinds": {
+        "str": 2657
+      }
+    },
+    {
+      "key": "anomaly_context",
+      "value_kinds": {
+        "object": 65
+      }
+    },
+    {
+      "key": "asset_unique_id",
+      "value_kinds": {
+        "str": 21512
+      }
+    },
+    {
+      "key": "base64_encoded_secret",
+      "value_kinds": {
+        "bool": 2
+      }
+    },
+    {
+      "key": "category",
+      "value_kinds": {
+        "str": 32662
+      }
+    },
+    {
+      "key": "ci_name",
+      "value_kinds": {
+        "str": 51746
+      }
+    },
+    {
+      "key": "cloud_context",
+      "value_kinds": {
+        "object": 2838
+      }
+    },
+    {
+      "key": "cloud_provider",
+      "value_kinds": {
+        "str": 3561
+      }
+    },
+    {
+      "key": "code_owners",
+      "value_kinds": {
+        "array_of_scalars": 36281
+      }
+    },
+    {
+      "key": "confidence",
+      "value_kinds": {
+        "str": 7931
+      }
+    },
+    {
+      "key": "control_id",
+      "value_kinds": {
+        "str": 32662
+      }
+    },
+    {
+      "key": "count_by_cvss_severity",
+      "value_kinds": {
+        "object": 11926
+      }
+    },
+    {
+      "key": "cve",
+      "value_kinds": {
+        "object": 1887
+      }
+    },
+    {
+      "key": "cves",
+      "value_kinds": {
+        "object": 9904
+      }
+    },
+    {
+      "key": "cwe",
+      "value_kinds": {
+        "array_of_scalars": 48981
+      }
+    },
+    {
+      "key": "decoded_match",
+      "value_kinds": {
+        "str": 2
+      }
+    },
+    {
+      "key": "description_urls",
+      "value_kinds": {
+        "array_of_scalars": 41384,
+        "array_empty": 9
+      }
+    },
+    {
+      "key": "details",
+      "value_kinds": {
+        "str": 32662
+      }
+    },
+    {
+      "key": "entity",
+      "value_kinds": {
+        "str": 32662
+      }
+    },
+    {
+      "key": "evidences",
+      "value_kinds": {
+        "object": 65
+      }
+    },
+    {
+      "key": "expected_value",
+      "value_kinds": {
+        "str": 39158
+      }
+    },
+    {
+      "key": "exploitable",
+      "value_kinds": {
+        "int": 11926
+      }
+    },
+    {
+      "key": "feature_type",
+      "value_kinds": {
+        "str": 51746
+      }
+    },
+    {
+      "key": "finding_hash",
+      "value_kinds": {
+        "str": 2657
+      }
+    },
+    {
+      "key": "first_commit",
+      "value_kinds": {
+        "object": 1378
+      }
+    },
+    {
+      "key": "fixable",
+      "value_kinds": {
+        "int": 11926
+      }
+    },
+    {
+      "key": "id",
+      "value_kinds": {
+        "str": 23267
+      }
+    },
+    {
+      "key": "impact",
+      "value_kinds": {
+        "str": 4204
+      }
+    },
+    {
+      "key": "is_custom",
+      "value_kinds": {
+        "bool": 51746
+      }
+    },
+    {
+      "key": "is_only_in_history",
+      "value_kinds": {
+        "bool": 1215
+      }
+    },
+    {
+      "key": "is_test_file",
+      "value_kinds": {
+        "bool": 51746
+      }
+    },
+    {
+      "key": "key",
+      "value_kinds": {
+        "str": 84408
+      }
+    },
+    {
+      "key": "languages",
+      "value_kinds": {
+        "array_of_scalars": 9931
+      }
+    },
+    {
+      "key": "likelihood",
+      "value_kinds": {
+        "str": 4204
+      }
+    },
+    {
+      "key": "line",
+      "value_kinds": {
+        "int": 39158
+      }
+    },
+    {
+      "key": "match",
+      "value_kinds": {
+        "str": 1373
+      }
+    },
+    {
+      "key": "name",
+      "value_kinds": {
+        "str": 23267
+      }
+    },
+    {
+      "key": "origin",
+      "value_kinds": {
+        "str": 51746
+      }
+    },
+    {
+      "key": "origin_url",
+      "value_kinds": {
+        "str": 51746
+      }
+    },
+    {
+      "key": "owasp",
+      "value_kinds": {
+        "array_of_scalars": 6927
+      }
+    },
+    {
+      "key": "package",
+      "value_kinds": {
+        "object": 9770
+      }
+    },
+    {
+      "key": "platform",
+      "value_kinds": {
+        "str": 39158
+      }
+    },
+    {
+      "key": "position",
+      "value_kinds": {
+        "object": 9931
+      }
+    },
+    {
+      "key": "priority",
+      "value_kinds": {
+        "str": 32662
+      }
+    },
+    {
+      "key": "private_key_file",
+      "value_kinds": {
+        "str": 6
+      }
+    },
+    {
+      "key": "recommendation",
+      "value_kinds": {
+        "str": 32662
+      }
+    },
+    {
+      "key": "repository",
+      "value_kinds": {
+        "object": 51746
+      }
+    },
+    {
+      "key": "resource_name",
+      "value_kinds": {
+        "str": 12721
+      }
+    },
+    {
+      "key": "resource_type",
+      "value_kinds": {
+        "str": 12856
+      }
+    },
+    {
+      "key": "scm",
+      "value_kinds": {
+        "str": 32662
+      }
+    },
+    {
+      "key": "source",
+      "value_kinds": {
+        "str": 35319
+      }
+    },
+    {
+      "key": "tags",
+      "value_kinds": {
+        "array_of_scalars": 640
+      }
+    },
+    {
+      "key": "threat",
+      "value_kinds": {
+        "array_of_scalars": 32662
+      }
+    },
+    {
+      "key": "title",
+      "value_kinds": {
+        "str": 32662
+      }
+    },
+    {
+      "key": "total_cves",
+      "value_kinds": {
+        "int": 11926
+      }
+    },
+    {
+      "key": "type",
+      "value_kinds": {
+        "str": 55929
+      }
+    },
+    {
+      "key": "version",
+      "value_kinds": {
+        "str": 23267
+      }
+    }
+  ]
+}

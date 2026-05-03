@@ -26,6 +26,77 @@
   │   cveresolved                       object(2223 campos)  avg 0%
   └───────────────────────────────────────────────────────
 
+  ┌─ alert_riskfindings_aclgrants
+  │   alert_id                          string       [FK]
+  │   riskfindings_id                   string        ← sparse
+  │   GranteeType                       string      
+  │   GranteeURI                        string        ← sparse
+  │   Id_                               string      
+  │   Permission                        string      
+  │   id                                string      
+  │   name                              string      
+  │   type                              string      
+  └───────────────────────────────────────────────────────
+
+  ┌─ alert_riskfindings_attachments
+  │   alert_id                          string       [FK]
+  │   riskfindings_id                   string        ← sparse
+  │   Arn                               string      
+  │   AwsState                          string      
+  │   Image                             object      
+  │   asset_unique_id                   string      
+  │   id                                string      
+  │   name                              string      
+  │   type                              string      
+  └───────────────────────────────────────────────────────
+
+  ┌─ alert_riskfindings_awscloudtrail
+  │   alert_id                          string       [FK]
+  │   riskfindings_id                   string        ← sparse
+  │   Arn                               string      
+  │   asset_unique_id                   string      
+  │   id                                string      
+  │   name                              string      
+  │   type                              string      
+  └───────────────────────────────────────────────────────
+
+  ┌─ alert_riskfindings_awsiampasswordpolicy
+  │   alert_id                          string       [FK]
+  │   riskfindings_id                   string        ← sparse
+  │   MaxPasswordAge                    null          ← sparse
+  │   asset_unique_id                   string      
+  │   id                                string      
+  │   name                              string      
+  │   type                              string      
+  │   MinimumPasswordLength             integer       ← sparse
+  │   RequireNumbers                    null          ← sparse
+  │   RequireUppercaseCharacters        null          ← sparse
+  │   RequireLowercaseCharacters        null          ← sparse
+  │   RequireSymbols                    null          ← sparse
+  └───────────────────────────────────────────────────────
+
+  ┌─ alert_riskfindings_awsuser
+  │   alert_id                          string       [FK]
+  │   riskfindings_id                   string        ← sparse
+  │   Arn                               string      
+  │   MfaActive                         boolean     
+  │   asset_unique_id                   string      
+  │   id                                string      
+  │   name                              string      
+  │   type                              string      
+  └───────────────────────────────────────────────────────
+
+  ┌─ alert_riskfindings_datalakeresources
+  │   alert_id                          string       [FK]
+  │   riskfindings_id                   string        ← sparse
+  │   Arn                               string      
+  │   S3Bucket                          object      
+  │   asset_unique_id                   string      
+  │   id                                string      
+  │   name                              string      
+  │   type                              string      
+  └───────────────────────────────────────────────────────
+
   ┌─ alert_riskfindings_dependencypackages
   │   alert_id                          string       [FK]
   │   riskfindings_id                   string        ← sparse
@@ -37,63 +108,38 @@
   │   type                              string      
   └───────────────────────────────────────────────────────
 
-  ┌─ alert_riskfindings_policies
+  ┌─ alert_riskfindings_ec2ebssnapshots
+  │   alert_id                          string       [FK]
+  │   riskfindings_id                   string        ← sparse
+  │   CreationTime                      string      
+  │   IsPublic                          boolean     
+  │   SnapshotId                        string      
+  │   StorageEncrypted                  boolean     
+  │   asset_unique_id                   string      
+  │   id                                string      
+  │   name                              string      
+  │   type                              string      
+  └───────────────────────────────────────────────────────
+
+  ┌─ alert_riskfindings_ec2ebsvolumes
   │   alert_id                          string       [FK]
   │   riskfindings_id                   string        ← sparse
   │   asset_unique_id                   string      
   │   id                                string      
   │   name                              string      
   │   type                              string      
-  │   IsPermissive                      boolean       ← sparse
-  │   PermissiveActions                 array         ← sparse
-  │   PolicyBody                        string        ← sparse
-  │   PolicyId                          string        ← sparse
-  │   ManagedPolicies                   array         ← sparse
-  │   ResourceType                      string        ← sparse
   └───────────────────────────────────────────────────────
 
-  ┌─ alert_riskfindings_sgippermissions
+  ┌─ alert_riskfindings_ec2instances
   │   alert_id                          string       [FK]
   │   riskfindings_id                   string        ← sparse
-  │   Egress                            boolean     
-  │   IpProtocol                        string      
-  │   IpRanges                          array       
-  │   Ipv6Ranges                        array       
-  │   PortRange                         string      
+  │   Arn                               string        ← sparse
+  │   IamInstanceProfile                object        ← sparse
+  │   MetadataOptions                   string        ← sparse
+  │   asset_unique_id                   string      
   │   id                                string      
   │   name                              string      
   │   type                              string      
-  │   HasPrivateRanges                  boolean       ← sparse
-  └───────────────────────────────────────────────────────
-
-  ┌─ alert_riskfindings_data
-  │   alert_id                          string       [FK]
-  │   riskfindings_id                   string        ← sparse
-  │   name                              string      
-  │   url                               string        ← sparse
-  │   update_date                       string      
-  └───────────────────────────────────────────────────────
-
-  ┌─ alert_riskfindings_code_snippet
-  │   alert_id                          string       [FK]
-  │   riskfindings_id                   string        ← sparse
-  │   line                              string      
-  │   position                          integer     
-  └───────────────────────────────────────────────────────
-
-  ┌─ alert_riskfindings_top_cves
-  │   alert_id                          string       [FK]
-  │   riskfindings_id                   string        ← sparse
-  │   cve_id                            string      
-  │   cvss_score                        float       
-  │   cvss_severity                     string      
-  │   cvss_source                       string      
-  │   cvss_source_link                  string      
-  │   cvss_vector                       string      
-  │   exploitable                       boolean     
-  │   first_seen                        string      
-  │   fixable                           boolean     
-  │   kb                                string        ← sparse
   └───────────────────────────────────────────────────────
 
   ┌─ alert_riskfindings_entitysources
@@ -118,18 +164,6 @@
   │   ApplicationExposure               string        ← sparse
   └───────────────────────────────────────────────────────
 
-  ┌─ alert_riskfindings_aclgrants
-  │   alert_id                          string       [FK]
-  │   riskfindings_id                   string        ← sparse
-  │   GranteeType                       string      
-  │   GranteeURI                        string        ← sparse
-  │   Id_                               string      
-  │   Permission                        string      
-  │   id                                string      
-  │   name                              string      
-  │   type                              string      
-  └───────────────────────────────────────────────────────
-
   ┌─ alert_riskfindings_guarddutyfindings
   │   alert_id                          string       [FK]
   │   riskfindings_id                   string        ← sparse
@@ -150,20 +184,6 @@
   │   type                              string      
   └───────────────────────────────────────────────────────
 
-  ┌─ alert_riskfindings_sensitivedata
-  │   alert_id                          string       [FK]
-  │   riskfindings_id                   string        ← sparse
-  │   ExtraData                         object      
-  │   id                                string      
-  │   name                              string      
-  │   type                              string      
-  │   Category                          string        ← sparse
-  │   Count                             integer       ← sparse
-  │   Identifier                        string        ← sparse
-  │   Sample                            string        ← sparse
-  │   SensitiveFile                     object        ← sparse
-  └───────────────────────────────────────────────────────
-
   ┌─ alert_riskfindings_httpoperations
   │   alert_id                          string       [FK]
   │   riskfindings_id                   string        ← sparse
@@ -177,55 +197,12 @@
   │   type                              string      
   └───────────────────────────────────────────────────────
 
-  ┌─ alert_riskfindings_securitygroups
+  ┌─ alert_riskfindings_linuxospasswords
   │   alert_id                          string       [FK]
   │   riskfindings_id                   string        ← sparse
-  │   Description                       string      
-  │   GroupId                           string      
-  │   SgIpPermissions                   array       
-  │   asset_unique_id                   string      
-  │   id                                string      
-  │   name                              string      
-  │   type                              string      
-  └───────────────────────────────────────────────────────
-
-  ┌─ alert_riskfindings_networkaclrules
-  │   alert_id                          string       [FK]
-  │   riskfindings_id                   string        ← sparse
-  │   CidrBlock                         string      
-  │   Egress                            boolean     
-  │   Protocol                          string      
-  │   RuleAction                        string      
-  │   RuleId                            string      
-  │   RuleNumber                        integer     
-  │   id                                string      
-  │   name                              string      
-  │   type                              string      
-  │   Ipv6CidrBlock                     string        ← sparse
-  │   PortRange                         string        ← sparse
-  └───────────────────────────────────────────────────────
-
-  ┌─ alert_riskfindings_sensitivefiles
-  │   alert_id                          string       [FK]
-  │   riskfindings_id                   string        ← sparse
-  │   AccessTime                        string      
-  │   Content                           object      
-  │   CreationTime                      string      
-  │   ModificationTime                  string      
-  │   Path                              string      
-  │   SensitiveData                     array       
-  │   id                                string      
-  │   name                              string      
-  │   type                              string      
-  └───────────────────────────────────────────────────────
-
-  ┌─ alert_riskfindings_attachments
-  │   alert_id                          string       [FK]
-  │   riskfindings_id                   string        ← sparse
-  │   Arn                               string      
-  │   AwsState                          string      
-  │   Image                             object      
-  │   asset_unique_id                   string      
+  │   MaskedPassword                    string      
+  │   Status                            string      
+  │   Username                          string      
   │   id                                string      
   │   name                              string      
   │   type                              string      
@@ -249,17 +226,35 @@
   │   SslSecurityPolicy                 array         ← sparse
   └───────────────────────────────────────────────────────
 
-  ┌─ alert_riskfindings_targetgroups
+  ┌─ alert_riskfindings_networkaclrules
   │   alert_id                          string       [FK]
   │   riskfindings_id                   string        ← sparse
-  │   Arn                               string      
-  │   HealthyEc2InstancesCount          integer     
-  │   TargetType                        string      
-  │   TotalEc2InstancesCount            integer     
+  │   CidrBlock                         string      
+  │   Egress                            boolean     
+  │   Protocol                          string      
+  │   RuleAction                        string      
+  │   RuleId                            string      
+  │   RuleNumber                        integer     
+  │   id                                string      
+  │   name                              string      
+  │   type                              string      
+  │   Ipv6CidrBlock                     string        ← sparse
+  │   PortRange                         string        ← sparse
+  └───────────────────────────────────────────────────────
+
+  ┌─ alert_riskfindings_networkinterfaces
+  │   alert_id                          string       [FK]
+  │   riskfindings_id                   string        ← sparse
+  │   Description                       string      
+  │   NetworkInterfaceId                string      
+  │   PrivateIpAddress                  string      
+  │   Status                            string      
   │   asset_unique_id                   string      
   │   id                                string      
   │   name                              string      
   │   type                              string      
+  │   PublicIpAddress                   string        ← sparse
+  │   SecurityGroups                    array         ← sparse
   └───────────────────────────────────────────────────────
 
   ┌─ alert_riskfindings_parametergroups
@@ -273,16 +268,103 @@
   │   type                              string      
   └───────────────────────────────────────────────────────
 
-  ┌─ alert_riskfindings_ec2instances
+  ┌─ alert_riskfindings_policies
   │   alert_id                          string       [FK]
   │   riskfindings_id                   string        ← sparse
-  │   Arn                               string        ← sparse
-  │   IamInstanceProfile                object        ← sparse
-  │   MetadataOptions                   string        ← sparse
   │   asset_unique_id                   string      
   │   id                                string      
   │   name                              string      
   │   type                              string      
+  │   IsPermissive                      boolean       ← sparse
+  │   PermissiveActions                 array         ← sparse
+  │   PolicyBody                        string        ← sparse
+  │   PolicyId                          string        ← sparse
+  │   ManagedPolicies                   array         ← sparse
+  │   ResourceType                      string        ← sparse
+  └───────────────────────────────────────────────────────
+
+  ┌─ alert_riskfindings_pua
+  │   alert_id                          string       [FK]
+  │   riskfindings_id                   string        ← sparse
+  │   Content                           object      
+  │   id                                string      
+  │   name                              string      
+  │   type                              string      
+  └───────────────────────────────────────────────────────
+
+  ┌─ alert_riskfindings_resourcerecordsets
+  │   alert_id                          string       [FK]
+  │   riskfindings_id                   string        ← sparse
+  │   AliasTarget                       string      
+  │   RecordType                        string      
+  │   ResourceRecordValues              array       
+  │   RoutingPolicy                     string      
+  │   id                                string      
+  │   name                              string      
+  │   type                              string      
+  └───────────────────────────────────────────────────────
+
+  ┌─ alert_riskfindings_roles
+  │   alert_id                          string       [FK]
+  │   riskfindings_id                   string        ← sparse
+  │   Arn                               string      
+  │   EffectivePermissionsPolicy        object      
+  │   LastActiveTime                    string      
+  │   PermissionUsage                   float       
+  │   Policies                          array       
+  │   RoleId                            string      
+  │   asset_unique_id                   string      
+  │   id                                string      
+  │   name                              string      
+  │   type                              string      
+  │   RoleType                          string        ← sparse
+  └───────────────────────────────────────────────────────
+
+  ┌─ alert_riskfindings_runningservices
+  │   alert_id                          string       [FK]
+  │   riskfindings_id                   string        ← sparse
+  │   id                                string      
+  │   name                              string      
+  │   type                              string      
+  └───────────────────────────────────────────────────────
+
+  ┌─ alert_riskfindings_sshconfigurationfiles
+  │   alert_id                          string       [FK]
+  │   riskfindings_id                   string        ← sparse
+  │   AuthenticationMethod              null          ← sparse
+  │   IsDir                             boolean     
+  │   PasswordAuthentication            boolean     
+  │   Path                              string      
+  │   id                                string      
+  │   name                              string      
+  │   type                              string      
+  │   PermitRootLogin                   string        ← sparse
+  └───────────────────────────────────────────────────────
+
+  ┌─ alert_riskfindings_securitygroups
+  │   alert_id                          string       [FK]
+  │   riskfindings_id                   string        ← sparse
+  │   Description                       string      
+  │   GroupId                           string      
+  │   SgIpPermissions                   array       
+  │   asset_unique_id                   string      
+  │   id                                string      
+  │   name                              string      
+  │   type                              string      
+  └───────────────────────────────────────────────────────
+
+  ┌─ alert_riskfindings_sensitivedata
+  │   alert_id                          string       [FK]
+  │   riskfindings_id                   string        ← sparse
+  │   ExtraData                         object      
+  │   id                                string      
+  │   name                              string      
+  │   type                              string      
+  │   Category                          string        ← sparse
+  │   Count                             integer       ← sparse
+  │   Identifier                        string        ← sparse
+  │   Sample                            string        ← sparse
+  │   SensitiveFile                     object        ← sparse
   └───────────────────────────────────────────────────────
 
   ┌─ alert_riskfindings_sensitivedbentries
@@ -297,17 +379,136 @@
   │   type                              string      
   └───────────────────────────────────────────────────────
 
-  ┌─ alert_riskfindings_ec2ebssnapshots
+  ┌─ alert_riskfindings_sensitivefiles
   │   alert_id                          string       [FK]
   │   riskfindings_id                   string        ← sparse
+  │   AccessTime                        string      
+  │   Content                           object      
   │   CreationTime                      string      
-  │   IsPublic                          boolean     
-  │   SnapshotId                        string      
-  │   StorageEncrypted                  boolean     
+  │   ModificationTime                  string      
+  │   Path                              string      
+  │   SensitiveData                     array       
+  │   id                                string      
+  │   name                              string      
+  │   type                              string      
+  └───────────────────────────────────────────────────────
+
+  ┌─ alert_riskfindings_sgippermissions
+  │   alert_id                          string       [FK]
+  │   riskfindings_id                   string        ← sparse
+  │   Egress                            boolean     
+  │   IpProtocol                        string      
+  │   IpRanges                          array       
+  │   Ipv6Ranges                        array       
+  │   PortRange                         string      
+  │   id                                string      
+  │   name                              string      
+  │   type                              string      
+  │   HasPrivateRanges                  boolean       ← sparse
+  └───────────────────────────────────────────────────────
+
+  ┌─ alert_riskfindings_shellhistorysuspiciouscommands
+  │   alert_id                          string       [FK]
+  │   riskfindings_id                   string        ← sparse
+  │   Category                          string      
+  │   Command                           string      
+  │   CommandWithParameters             string      
+  │   id                                string      
+  │   name                              string      
+  │   type                              string      
+  └───────────────────────────────────────────────────────
+
+  ┌─ alert_riskfindings_snssubscriptions
+  │   alert_id                          string       [FK]
+  │   riskfindings_id                   string        ← sparse
+  │   Endpoint                          string      
+  │   Protocol                          string      
+  │   SubscriptionArn                   string      
   │   asset_unique_id                   string      
   │   id                                string      
   │   name                              string      
   │   type                              string      
+  └───────────────────────────────────────────────────────
+
+  ┌─ alert_riskfindings_stages
+  │   alert_id                          string       [FK]
+  │   riskfindings_id                   string        ← sparse
+  │   asset_unique_id                   string      
+  │   id                                string      
+  │   name                              string      
+  │   type                              string      
+  └───────────────────────────────────────────────────────
+
+  ┌─ alert_riskfindings_targetgroups
+  │   alert_id                          string       [FK]
+  │   riskfindings_id                   string        ← sparse
+  │   Arn                               string      
+  │   HealthyEc2InstancesCount          integer     
+  │   TargetType                        string      
+  │   TotalEc2InstancesCount            integer     
+  │   asset_unique_id                   string      
+  │   id                                string      
+  │   name                              string      
+  │   type                              string      
+  └───────────────────────────────────────────────────────
+
+  ┌─ alert_riskfindings_vpclist
+  │   alert_id                          string       [FK]
+  │   riskfindings_id                   string        ← sparse
+  │   asset_unique_id                   string      
+  │   id                                string      
+  │   name                              string      
+  │   type                              string      
+  └───────────────────────────────────────────────────────
+
+  ┌─ alert_riskfindings_vpcsecuritygroups
+  │   alert_id                          string       [FK]
+  │   riskfindings_id                   string        ← sparse
+  │   OwnerId                           string      
+  │   SgIpPermissions                   array       
+  │   Vpc                               object      
+  │   asset_unique_id                   string      
+  │   id                                string      
+  │   name                              string      
+  │   type                              string      
+  └───────────────────────────────────────────────────────
+
+  ┌─ alert_riskfindings_code_snippet
+  │   alert_id                          string       [FK]
+  │   riskfindings_id                   string        ← sparse
+  │   line                              string      
+  │   position                          integer     
+  └───────────────────────────────────────────────────────
+
+  ┌─ alert_riskfindings_data
+  │   alert_id                          string       [FK]
+  │   riskfindings_id                   string        ← sparse
+  │   name                              string      
+  │   url                               string        ← sparse
+  │   update_date                       string      
+  └───────────────────────────────────────────────────────
+
+  ┌─ alert_riskfindings_public_keys
+  │   alert_id                          string       [FK]
+  │   riskfindings_id                   string        ← sparse
+  │   asset_name                        string      
+  │   asset_unique_id                   string      
+  │   key_file_name                     string      
+  └───────────────────────────────────────────────────────
+
+  ┌─ alert_riskfindings_top_cves
+  │   alert_id                          string       [FK]
+  │   riskfindings_id                   string        ← sparse
+  │   cve_id                            string      
+  │   cvss_score                        float       
+  │   cvss_severity                     string      
+  │   cvss_source                       string      
+  │   cvss_source_link                  string      
+  │   cvss_vector                       string      
+  │   exploitable                       boolean     
+  │   first_seen                        string      
+  │   fixable                           boolean     
+  │   kb                                string        ← sparse
   └───────────────────────────────────────────────────────
 
   ┌─ alert_inventories_value
@@ -317,30 +518,48 @@
   └───────────────────────────────────────────────────────
 
 ======================================================================
-  TOTAL: 24 tabela(s)
+  TOTAL: 42 tabela(s)
 ──────────────────────────────────────────────────────────────────────
    1. alerts                                   (16191 colunas)
-   2. alert_riskfindings_dependencypackages    (8 colunas)
-   3. alert_riskfindings_policies              (12 colunas)
-   4. alert_riskfindings_sgippermissions       (11 colunas)
-   5. alert_riskfindings_data                  (5 colunas)
-   6. alert_riskfindings_code_snippet          (4 colunas)
-   7. alert_riskfindings_top_cves              (12 colunas)
-   8. alert_riskfindings_entitysources         (6 colunas)
-   9. alert_riskfindings_externalports         (10 colunas)
-  10. alert_riskfindings_aclgrants             (9 colunas)
-  11. alert_riskfindings_guarddutyfindings     (17 colunas)
-  12. alert_riskfindings_sensitivedata         (11 colunas)
-  13. alert_riskfindings_httpoperations        (10 colunas)
-  14. alert_riskfindings_securitygroups        (9 colunas)
-  15. alert_riskfindings_networkaclrules       (13 colunas)
-  16. alert_riskfindings_sensitivefiles        (11 colunas)
-  17. alert_riskfindings_attachments           (9 colunas)
-  18. alert_riskfindings_listeners             (15 colunas)
-  19. alert_riskfindings_targetgroups          (10 colunas)
+   2. alert_riskfindings_aclgrants             (9 colunas)
+   3. alert_riskfindings_attachments           (9 colunas)
+   4. alert_riskfindings_awscloudtrail         (7 colunas)
+   5. alert_riskfindings_awsiampasswordpolicy  (12 colunas)
+   6. alert_riskfindings_awsuser               (8 colunas)
+   7. alert_riskfindings_datalakeresources     (8 colunas)
+   8. alert_riskfindings_dependencypackages    (8 colunas)
+   9. alert_riskfindings_ec2ebssnapshots       (10 colunas)
+  10. alert_riskfindings_ec2ebsvolumes         (6 colunas)
+  11. alert_riskfindings_ec2instances          (9 colunas)
+  12. alert_riskfindings_entitysources         (6 colunas)
+  13. alert_riskfindings_externalports         (10 colunas)
+  14. alert_riskfindings_guarddutyfindings     (17 colunas)
+  15. alert_riskfindings_httpoperations        (10 colunas)
+  16. alert_riskfindings_linuxospasswords      (8 colunas)
+  17. alert_riskfindings_listeners             (15 colunas)
+  18. alert_riskfindings_networkaclrules       (13 colunas)
+  19. alert_riskfindings_networkinterfaces     (12 colunas)
   20. alert_riskfindings_parametergroups       (8 colunas)
-  21. alert_riskfindings_ec2instances          (9 colunas)
-  22. alert_riskfindings_sensitivedbentries    (9 colunas)
-  23. alert_riskfindings_ec2ebssnapshots       (10 colunas)
-  24. alert_inventories_value                  (3 colunas)
+  21. alert_riskfindings_policies              (12 colunas)
+  22. alert_riskfindings_pua                   (6 colunas)
+  23. alert_riskfindings_resourcerecordsets    (9 colunas)
+  24. alert_riskfindings_roles                 (13 colunas)
+  25. alert_riskfindings_runningservices       (5 colunas)
+  26. alert_riskfindings_sshconfigurationfiles (10 colunas)
+  27. alert_riskfindings_securitygroups        (9 colunas)
+  28. alert_riskfindings_sensitivedata         (11 colunas)
+  29. alert_riskfindings_sensitivedbentries    (9 colunas)
+  30. alert_riskfindings_sensitivefiles        (11 colunas)
+  31. alert_riskfindings_sgippermissions       (11 colunas)
+  32. alert_riskfindings_shellhistorysuspiciouscommands (8 colunas)
+  33. alert_riskfindings_snssubscriptions      (9 colunas)
+  34. alert_riskfindings_stages                (6 colunas)
+  35. alert_riskfindings_targetgroups          (10 colunas)
+  36. alert_riskfindings_vpclist               (6 colunas)
+  37. alert_riskfindings_vpcsecuritygroups     (9 colunas)
+  38. alert_riskfindings_code_snippet          (4 colunas)
+  39. alert_riskfindings_data                  (5 colunas)
+  40. alert_riskfindings_public_keys           (5 colunas)
+  41. alert_riskfindings_top_cves              (12 colunas)
+  42. alert_inventories_value                  (3 colunas)
 ======================================================================

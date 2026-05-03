@@ -1,0 +1,83 @@
+[
+   {
+     "Name": "alertid",
+     "Type": "string",
+     "Parameters": {
+       "iceberg.field.current": "true",
+       "iceberg.field.id": "1",
+       "iceberg.field.optional": "true"
+     }
+   },
+   {
+     "Name": "granteetype",
+     "Type": "string",
+     "Parameters": {
+       "iceberg.field.current": "true",
+       "iceberg.field.id": "2",
+       "iceberg.field.optional": "true"
+     }
+   },
+   {
+     "Name": "granteeuri",
+     "Type": "string",
+     "Parameters": {
+       "iceberg.field.current": "true",
+       "iceberg.field.id": "3",
+       "iceberg.field.optional": "true"
+     }
+   },
+   {
+     "Name": "id_",
+     "Type": "string",
+     "Parameters": {
+       "iceberg.field.current": "true",
+       "iceberg.field.id": "4",
+       "iceberg.field.optional": "true"
+     }
+   },
+   {
+     "Name": "permission",
+     "Type": "string",
+     "Parameters": {
+       "iceberg.field.current": "true",
+       "iceberg.field.id": "5",
+       "iceberg.field.optional": "true"
+     }
+   },
+   {
+     "Name": "id",
+     "Type": "string",
+     "Parameters": {
+       "iceberg.field.current": "true",
+       "iceberg.field.id": "6",
+       "iceberg.field.optional": "true"
+     }
+   },
+   {
+     "Name": "name",
+     "Type": "string",
+     "Parameters": {
+       "iceberg.field.current": "true",
+       "iceberg.field.id": "7",
+       "iceberg.field.optional": "true"
+     }
+   },
+   {
+     "Name": "type",
+     "Type": "string",
+     "Parameters": {
+       "iceberg.field.current": "true",
+       "iceberg.field.id": "8",
+       "iceberg.field.optional": "true"
+     }
+   },
+   {
+     "Name": "_trusted_ingested_at",
+     "Type": "timestamp",
+     "Parameters": {
+       "iceberg.field.current": "true",
+       "iceberg.field.id": "9",
+       "iceberg.field.optional": "true"
+     }
+   }
+ ]

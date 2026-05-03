@@ -1,0 +1,47 @@
+[
+   {
+     "Name": "alertid",
+     "Type": "string",
+     "Parameters": {
+       "iceberg.field.current": "true",
+       "iceberg.field.id": "1",
+       "iceberg.field.optional": "true"
+     }
+   },
+   {
+     "Name": "line",
+     "Type": "string",
+     "Parameters": {
+       "iceberg.field.current": "true",
+       "iceberg.field.id": "2",
+       "iceberg.field.optional": "true"
+     }
+   },
+   {
+     "Name": "position",
+     "Type": "bigint",
+     "Parameters": {
+       "iceberg.field.current": "true",
+       "iceberg.field.id": "3",
+       "iceberg.field.optional": "true"
+     }
+   },
+   {
+     "Name": "execution_date",
+     "Type": "date",
+     "Parameters": {
+       "iceberg.field.current": "true",
+       "iceberg.field.id": "4",
+       "iceberg.field.optional": "true"
+     }
+   },
+   {
+     "Name": "_trusted_ingested_at",
+     "Type": "timestamp",
+     "Parameters": {
+       "iceberg.field.current": "true",
+       "iceberg.field.id": "5",
+       "iceberg.field.optional": "true"
+     }
+   }
+]
