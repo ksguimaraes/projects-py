@@ -300,6 +300,8 @@ class IcebergIngestion:
 
             # Adiciona metadados
             nested_df = nested_df.withColumn(
+                "execution_date", F.lit(execution_date).cast("date")
+            ).withColumn(
                 "_trusted_ingested_at", F.current_timestamp()
             )
 
@@ -366,10 +368,17 @@ class IcebergIngestion:
             array_keys = [row["_map_key"] for row in array_keys_df.collect()]
 
             results: List[Tuple[str, DataFrame]] = []
+            seen_suffixes: set = set()
 
             # Para cada chave com valor JSON array, cria uma sub-tabela
             for key in array_keys:
                 suffix = f"_{key.lower()}"
+                if suffix in seen_suffixes:
+                    logger.info(
+                        f"MAP '{map_col_name}' chave '{key}' ignorada — sufixo '{suffix}' já processado (conflito de case)"
+                    )
+                    continue
+                seen_suffixes.add(suffix)
                 logger.info(
                     f"MAP '{map_col_name}' chave '{key}' contém JSON array → sub-tabela com sufixo '{suffix}'"
                 )
@@ -385,6 +394,11 @@ class IcebergIngestion:
 
                 if not inferred_schema.fields:
                     logger.info(f"  Chave '{key}': não foi possível inferir schema, ignorando")
+                    continue
+
+                # Scalar arrays (e.g. code_snippet: ["line1","line2"]) infer as {value: string}
+                if {f.name for f in inferred_schema.fields} == {"value"}:
+                    logger.info(f"  Chave '{key}': array de escalares (campo 'value' apenas), ignorando")
                     continue
 
                 # O value é um JSON array → usa from_json com ArrayType(schema_do_elemento)
@@ -412,7 +426,9 @@ class IcebergIngestion:
                 )
 
                 final_df = cls.fix_nested_duplicate_names(final_df)
-                final_df = final_df.withColumn("_trusted_ingested_at", F.current_timestamp())
+                final_df = final_df.withColumn(
+                    "execution_date", F.lit(execution_date).cast("date")
+                ).withColumn("_trusted_ingested_at", F.current_timestamp())
                 results.append((key, suffix, final_df))
 
             return results if results else None
@@ -505,7 +521,10 @@ class IcebergIngestion:
             )
             array_keys = (
                 df.select(F.explode_outer(col_ref).alias("_k", "_v"))
-                .filter(F.col("_v").isNotNull() & F.trim(F.col("_v")).startswith("["))
+                .filter(
+                    F.col("_v").isNotNull()
+                    & F.trim(F.col("_v")).rlike(r'^\[\s*\{')
+                )
                 .select("_k")
                 .distinct()
                 .collect()
