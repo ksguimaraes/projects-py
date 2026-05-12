@@ -264,6 +264,9 @@ def configure_spark(spark: SparkSession, warehouse: str) -> None:
     No Glue, SparkSession.builder.config(...) é ignorado — a sessão já existe.
     """
     confs = {
+        "spark.sql.catalog.glue_catalog": "org.apache.iceberg.spark.SparkCatalog",
+        "spark.sql.catalog.glue_catalog.catalog-impl": "org.apache.iceberg.aws.glue.GlueCatalog",
+        "spark.sql.catalog.glue_catalog.io-impl": "org.apache.iceberg.aws.s3.S3FileIO",
         # Pool alto: MERGE em tabelas grandes abre conexões para muitas partições em paralelo.
         # Sem isso o Glue usa o default de 50 conexões do AWS SDK, que esgota com ~64 tasks concorrentes
         "spark.sql.catalog.glue_catalog.s3.max-connections": "2000",
