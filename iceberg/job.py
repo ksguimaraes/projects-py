@@ -154,9 +154,11 @@ class IcebergIngestion:
                 logger.error(f"Erro ao evoluir schema para a coluna {field.name}: {e}")
 
     @classmethod
-    def merge_data(cls, spark: SparkSession, df: DataFrame, table_identifier: str, primary_key: List[str], timestamp_column: str) -> None:
-        """Realiza merge dos dados usando SQL com base na chave primária."""       
+    def merge_data(cls, spark: SparkSession, df: DataFrame, table_identifier: str, primary_key: List[str], timestamp_column: str, target_filter: str = None) -> None:
+        """Realiza merge dos dados usando SQL com base na chave primária."""
         condition = " AND ".join([f"target.{col} = source.{col}" for col in primary_key])
+        if target_filter:
+            condition = f"({target_filter}) AND {condition}"
         update_condition = f"source.{timestamp_column} >= target.{timestamp_column}"
         merge_sql = f"""
             MERGE INTO {table_identifier} AS target
@@ -170,6 +172,8 @@ class IcebergIngestion:
         df.createOrReplaceTempView("staging_table")
         try:
             logger.info(f"Iniciando merge na tabela {table_identifier} usando as chaves primárias: {primary_key}.")
+            if target_filter:
+                logger.info(f"Filtro aplicado ao target: {target_filter}")
             spark.sql(merge_sql)
         except Exception as e:
             logger.error(f"Erro durante o merge na tabela {table_identifier}: {e}")
@@ -192,11 +196,13 @@ class IcebergIngestion:
         merge_config = dest["options"].get("merge_config", {})
         primary_key = merge_config.get("primary_key")
         if primary_key:
-            df = df.drop_duplicates(primary_key)  
+            df = df.drop_duplicates(primary_key)
 
+        # Persiste antes do primeiro action para que count(), agg(min) e o MERGE usem cache
+        df.persist()
         record_count = df.count()
         logger.info(f"Total de registros lidos: {record_count}")
-        
+
         if record_count == 0:
             logger.warning("Nenhum registro encontrado para processar. Finalizando job.")
             return
@@ -230,13 +236,20 @@ class IcebergIngestion:
                 writer.overwritePartitions()
             elif write_mode == "merge":
                 logger.info("Modo merge: realizando merge com base nas chaves primárias.")
-                
+
                 if not primary_key:
                     raise ValueError("Configuração de merge inválida: 'primary_key' é obrigatório.")
 
                 timestamp_column = merge_config.get("timestamp_column")
+                target_filter_col = merge_config.get("target_filter")
 
-                cls.merge_data(spark, df, table_identifier, primary_key, timestamp_column)
+                target_filter = None
+                if target_filter_col:
+                    min_val = df.agg(F.min(target_filter_col)).collect()[0][0]
+                    if min_val is not None:
+                        target_filter = f"target.{target_filter_col} >= CAST('{min_val}' AS timestamp)"
+
+                cls.merge_data(spark, df, table_identifier, primary_key, timestamp_column, target_filter)
             else:
                 raise ValueError(f"write_mode '{write_mode}' não suportado para tabela existente.")
         else:
@@ -249,59 +262,37 @@ class IcebergIngestion:
             writer.createOrReplace()
         
         spark.catalog.refreshTable(table_identifier)
-
         logger.info(f"Ingestão concluída com sucesso. {record_count} registros processados.")
 
 def create_spark_session(warehouse: str) -> SparkSession:
-    """
-    Cria e retorna uma SparkSession configurada para trabalhar com tabelas Iceberg usando o catálogo Glue.
-
-    Retorna:
-        SparkSession: Uma instância de SparkSession configurada para Iceberg e Glue Catalog.    
-    """
+    """Cria SparkSession configurada para Iceberg com Glue Catalog."""
     return (
         SparkSession.builder.appName("Iceberg Raw Tables")
         .config(
             "spark.sql.extensions",
             "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions",
         )
-        .config("spark.sql.iceberg.planning.preserve-data-grouping", "true")
         .config("spark.sql.catalog.glue_catalog", "org.apache.iceberg.spark.SparkCatalog")
-        .config(
-            "spark.sql.catalog.glue_catalog.catalog-impl",
-            "org.apache.iceberg.aws.glue.GlueCatalog",
-        )
-        .config(
-            "spark.sql.catalog.glue_catalog.io-impl",
-            "org.apache.iceberg.aws.s3.S3FileIO",
-        )
-        .config(
-            "spark.sql.sources.commitProtocolClass",
-            "org.apache.iceberg.spark.Spark3Util$IcebergCommitProtocol",
-        )
+        .config("spark.sql.catalog.glue_catalog.catalog-impl", "org.apache.iceberg.aws.glue.GlueCatalog")
+        .config("spark.sql.catalog.glue_catalog.io-impl", "org.apache.iceberg.aws.s3.S3FileIO")
         .config("spark.sql.catalog.glue_catalog.warehouse", warehouse)
-        # Configurações do S3FileIO do Iceberg (SDK AWS v2) - valores altos para tabelas grandes
-        .config("spark.sql.catalog.glue_catalog.s3.max-connections", "500")
+        # S3FileIO usa AWS SDK v2 diretamente — fs.s3a.* não tem efeito aqui
+        # Pool alto: MERGE em tabelas grandes abre conexões para muitas partições em paralelo
+        .config("spark.sql.catalog.glue_catalog.s3.max-connections", "2000")
         .config("spark.sql.catalog.glue_catalog.s3.connection-timeout-ms", "120000")
         .config("spark.sql.catalog.glue_catalog.s3.socket-timeout-ms", "120000")
         .config("spark.sql.catalog.glue_catalog.s3.request-timeout-ms", "300000")
-        .config("spark.sql.catalog.glue_catalog.s3.connection-acquisition-timeout-ms", "120000")
-        # Configurações de retry do cliente S3
-        .config("spark.sql.catalog.glue_catalog.client.retry.num-retries", "10")
-        # Configurações de paralelismo reduzido para evitar esgotamento do pool
-        .config("spark.sql.shuffle.partitions", "50")
-        .config("spark.default.parallelism", "50")
-        # Reduz threads de commit do Iceberg
+        .config("spark.sql.catalog.glue_catalog.s3.connection-acquisition-timeout-ms", "300000")
         .config("spark.sql.catalog.glue_catalog.s3.write.max-workers", "4")
-        # Habilita Adaptive Query Execution para otimizar automaticamente
+        .config("spark.sql.catalog.glue_catalog.client.retry.num-retries", "10")
+        # Paralelismo baixo + partições grandes reduzem tasks simultâneas lendo S3 no MERGE
+        .config("spark.sql.shuffle.partitions", "20")
+        .config("spark.default.parallelism", "20")
+        .config("spark.sql.files.maxPartitionBytes", "536870912")
+        .config("spark.sql.iceberg.planning.preserve-data-grouping", "true")
         .config("spark.sql.adaptive.enabled", "true")
         .config("spark.sql.adaptive.coalescePartitions.enabled", "true")
-        .config("spark.sql.adaptive.coalescePartitions.minPartitionNum", "10")
-        # Configurações do SDK AWS para o Iceberg
-        .config("spark.hadoop.fs.s3a.connection.maximum", "500")
-        .config("spark.hadoop.fs.s3a.threads.max", "50")
-        .config("spark.hadoop.fs.s3a.connection.timeout", "120000")
-        .enableHiveSupport()
+        .config("spark.sql.adaptive.coalescePartitions.minPartitionNum", "5")
         .getOrCreate()
     )
         
