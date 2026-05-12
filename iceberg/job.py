@@ -253,37 +253,36 @@ class IcebergIngestion:
         spark.catalog.refreshTable(table_identifier)
         logger.info(f"Ingestão concluída com sucesso. {record_count} registros processados.")
 
-def create_spark_session(warehouse: str) -> SparkSession:
-    """Cria SparkSession configurada para Iceberg com Glue Catalog."""
-    return (
-        SparkSession.builder.appName("Iceberg Raw Tables")
-        .config(
-            "spark.sql.extensions",
-            "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions",
-        )
-        .config("spark.sql.catalog.glue_catalog", "org.apache.iceberg.spark.SparkCatalog")
-        .config("spark.sql.catalog.glue_catalog.catalog-impl", "org.apache.iceberg.aws.glue.GlueCatalog")
-        .config("spark.sql.catalog.glue_catalog.io-impl", "org.apache.iceberg.aws.s3.S3FileIO")
-        .config("spark.sql.catalog.glue_catalog.warehouse", warehouse)
-        # S3FileIO usa AWS SDK v2 diretamente — fs.s3a.* não tem efeito aqui
-        # Pool alto: MERGE em tabelas grandes abre conexões para muitas partições em paralelo
-        .config("spark.sql.catalog.glue_catalog.s3.max-connections", "2000")
-        .config("spark.sql.catalog.glue_catalog.s3.connection-timeout-ms", "120000")
-        .config("spark.sql.catalog.glue_catalog.s3.socket-timeout-ms", "120000")
-        .config("spark.sql.catalog.glue_catalog.s3.request-timeout-ms", "300000")
-        .config("spark.sql.catalog.glue_catalog.s3.connection-acquisition-timeout-ms", "300000")
-        .config("spark.sql.catalog.glue_catalog.s3.write.max-workers", "4")
-        .config("spark.sql.catalog.glue_catalog.client.retry.num-retries", "10")
-        # Paralelismo baixo + partições grandes reduzem tasks simultâneas lendo S3 no MERGE
-        .config("spark.sql.shuffle.partitions", "20")
-        .config("spark.default.parallelism", "20")
-        .config("spark.sql.files.maxPartitionBytes", "536870912")
-        .config("spark.sql.iceberg.planning.preserve-data-grouping", "true")
-        .config("spark.sql.adaptive.enabled", "true")
-        .config("spark.sql.adaptive.coalescePartitions.enabled", "true")
-        .config("spark.sql.adaptive.coalescePartitions.minPartitionNum", "5")
-        .getOrCreate()
-    )
+def create_spark_session() -> SparkSession:
+    """Retorna a SparkSession existente criada pelo Glue."""
+    return SparkSession.builder.appName("Iceberg Raw Tables").getOrCreate()
+
+
+def configure_spark(spark: SparkSession, warehouse: str) -> None:
+    """
+    Aplica configurações via spark.conf.set após a sessão existir.
+    No Glue, SparkSession.builder.config(...) é ignorado — a sessão já existe.
+    """
+    confs = {
+        # Pool alto: MERGE em tabelas grandes abre conexões para muitas partições em paralelo.
+        # Sem isso o Glue usa o default de 50 conexões do AWS SDK, que esgota com ~64 tasks concorrentes
+        "spark.sql.catalog.glue_catalog.s3.max-connections": "2000",
+        "spark.sql.catalog.glue_catalog.s3.connection-timeout-ms": "120000",
+        "spark.sql.catalog.glue_catalog.s3.socket-timeout-ms": "120000",
+        "spark.sql.catalog.glue_catalog.s3.request-timeout-ms": "300000",
+        "spark.sql.catalog.glue_catalog.s3.connection-acquisition-timeout-ms": "300000",
+        "spark.sql.catalog.glue_catalog.s3.write.max-workers": "4",
+        "spark.sql.catalog.glue_catalog.client.retry.num-retries": "10",
+        "spark.sql.catalog.glue_catalog.warehouse": warehouse,
+        "spark.sql.shuffle.partitions": "20",
+        "spark.sql.files.maxPartitionBytes": "536870912",
+        "spark.sql.iceberg.planning.preserve-data-grouping": "true",
+        "spark.sql.adaptive.enabled": "true",
+        "spark.sql.adaptive.coalescePartitions.enabled": "true",
+        "spark.sql.adaptive.coalescePartitions.minPartitionNum": "5",
+    }
+    for key, value in confs.items():
+        spark.conf.set(key, value)
         
 def parse_arguments() -> argparse.Namespace:
     """
@@ -336,8 +335,9 @@ def main():
     
         logger.info(f"Iniciando job para data: {start_date} até {end_date}")
 
-        spark = create_spark_session(config.get("destination", {}).get("warehouse"))
-        logger.info("SparkSession criada com sucesso.")
+        spark = create_spark_session()
+        configure_spark(spark, config.get("destination", {}).get("warehouse", ""))
+        logger.info("SparkSession configurada com sucesso.")
         logger.info(f"Caminho do arquivo SQL: {args.path_query}")
         config["source"] = {"query_path": args.path_query}
 
