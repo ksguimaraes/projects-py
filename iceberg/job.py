@@ -208,14 +208,6 @@ class IcebergIngestion:
             logger.warning("Nenhum registro encontrado para processar. Finalizando job.")
             return
 
-        target_filter = None
-        if write_mode == "merge":
-            target_filter_col = merge_config.get("target_filter")
-            if target_filter_col:
-                min_val = df.agg(F.min(target_filter_col)).collect()[0][0]
-                if min_val is not None:
-                    target_filter = f"target.{target_filter_col} >= CAST('{min_val}' AS timestamp)"
-
         table_identifier = f"glue_catalog.{dest['database_name']}.{dest['table_name']}"
         table_exists = spark.catalog.tableExists(table_identifier)
 
@@ -241,6 +233,12 @@ class IcebergIngestion:
                 if not primary_key:
                     raise ValueError("Configuração de merge inválida: 'primary_key' é obrigatório.")
                 timestamp_column = merge_config.get("timestamp_column")
+                target_filter_col = merge_config.get("target_filter")
+                target_filter = None
+                if target_filter_col:
+                    min_val = df.agg(F.min(target_filter_col)).collect()[0][0]
+                    if min_val is not None:
+                        target_filter = f"target.{target_filter_col} >= CAST('{min_val}' AS timestamp)"
                 cls.merge_data(spark, df, table_identifier, primary_key, timestamp_column, target_filter)
             else:
                 raise ValueError(f"write_mode '{write_mode}' não suportado para tabela existente.")
