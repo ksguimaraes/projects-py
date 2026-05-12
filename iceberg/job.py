@@ -189,16 +189,17 @@ class IcebergIngestion:
             - overwrite: sobrescreve partições
         """        
         
-        # Carrega os dados usando a consulta SQL definida no arquivo
         query_path = config["source"]["query_path"]
         df = cls.load_query(spark, query_path, start_date=start_date, end_date=end_date)
         dest = config["destination"]
-        merge_config = dest["options"].get("merge_config", {})
+        dest_options = dest.get("options", {})
+        merge_config = dest_options.get("merge_config", {})
         primary_key = merge_config.get("primary_key")
+        write_mode = dest.get("write_mode", "append")
+
         if primary_key:
             df = df.drop_duplicates(primary_key)
 
-        # Persiste antes do primeiro action para que count(), agg(min) e o MERGE usem cache
         df.persist()
         record_count = df.count()
         logger.info(f"Total de registros lidos: {record_count}")
@@ -207,25 +208,26 @@ class IcebergIngestion:
             logger.warning("Nenhum registro encontrado para processar. Finalizando job.")
             return
 
+        target_filter = None
+        if write_mode == "merge":
+            target_filter_col = merge_config.get("target_filter")
+            if target_filter_col:
+                min_val = df.agg(F.min(target_filter_col)).collect()[0][0]
+                if min_val is not None:
+                    target_filter = f"target.{target_filter_col} >= CAST('{min_val}' AS timestamp)"
+
         table_identifier = f"glue_catalog.{dest['database_name']}.{dest['table_name']}"
         table_exists = spark.catalog.tableExists(table_identifier)
-        
-        if table_exists:
-            logger.info(f"Tabela {table_identifier} existe. Verificando compatibilidade de schema.")        
-            # Sincroniza schema antes de escrever para evitar erros de schema mismatch
-            cls.sync_schema(spark, df, table_identifier)
 
-            table_schema_df = spark.table(table_identifier).limit(0)
-            # Garante que o DataFrame de leitura tenha todas as colunas da tabela (mesmo que vazias) para evitar erros de schema
-            df = df.unionByName(table_schema_df, allowMissingColumns=True)
-        
-        writer = df.writeTo(table_identifier).tableProperty("format-version", "2")
+        if table_exists:
+            logger.info(f"Tabela {table_identifier} existe. Verificando compatibilidade de schema.")
+            cls.sync_schema(spark, df, table_identifier)
+            df = df.unionByName(spark.table(table_identifier).limit(0), allowMissingColumns=True)
+
+        # merge_config é configuração interna do job, não uma propriedade Iceberg
+        iceberg_options = {k: v for k, v in dest_options.items() if isinstance(v, str)}
+        writer = df.writeTo(table_identifier).tableProperty("format-version", "2").options(**iceberg_options)
         logger.info(f"Escrevendo dados em: {table_identifier}")
-        
-        if "options" in dest:
-            writer = writer.options(**dest["options"])
-        
-        write_mode = dest.get("write_mode", "append")
 
         if table_exists:
             if write_mode == "append":
@@ -236,31 +238,20 @@ class IcebergIngestion:
                 writer.overwritePartitions()
             elif write_mode == "merge":
                 logger.info("Modo merge: realizando merge com base nas chaves primárias.")
-
                 if not primary_key:
                     raise ValueError("Configuração de merge inválida: 'primary_key' é obrigatório.")
-
                 timestamp_column = merge_config.get("timestamp_column")
-                target_filter_col = merge_config.get("target_filter")
-
-                target_filter = None
-                if target_filter_col:
-                    min_val = df.agg(F.min(target_filter_col)).collect()[0][0]
-                    if min_val is not None:
-                        target_filter = f"target.{target_filter_col} >= CAST('{min_val}' AS timestamp)"
-
                 cls.merge_data(spark, df, table_identifier, primary_key, timestamp_column, target_filter)
             else:
                 raise ValueError(f"write_mode '{write_mode}' não suportado para tabela existente.")
         else:
             logger.info("Tabela não existe. Criando nova tabela.")
-            # Particionamento dinâmico
             partition_by = dest.get("partition_by")
             if partition_by:
                 writer = writer.partitionedBy(*cls.build_partition_spec(partition_by))
                 logger.info(f"Particionado por: {partition_by}")
             writer.createOrReplace()
-        
+
         spark.catalog.refreshTable(table_identifier)
         logger.info(f"Ingestão concluída com sucesso. {record_count} registros processados.")
 
