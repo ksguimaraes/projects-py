@@ -1,6 +1,7 @@
 import argparse
 import logging
 from typing import Any, Dict
+from urllib.parse import urlparse
 
 import boto3
 from pyspark.sql import SparkSession, DataFrame
@@ -66,11 +67,21 @@ class TrsIngestion:
 
         logger.info(f"{moved} arquivo(s) CSV movido(s).")
 
+    @staticmethod
+    def create_success_file(orc_location: str) -> None:
+        """Cria arquivo _SUCCESS no diretório ORC após a escrita, replicando comportamento Hadoop."""
+        s3 = boto3.client("s3")
+        parsed = urlparse(orc_location.rstrip("/"))
+        bucket = parsed.netloc
+        key = f"{parsed.path.lstrip('/')}/_SUCCESS"
+        s3.put_object(Bucket=bucket, Key=key, Body=b"")
+        logger.info(f"Arquivo _SUCCESS criado em s3://{bucket}/{key}")
+
     @classmethod
-    def read_csv(cls, spark: SparkSession, s3_path: str, table_identifier: str) -> DataFrame:
-        """Lê CSVs sem cabeçalho usando o schema obtido da tabela Iceberg."""
-        schema = spark.table(table_identifier).schema
-        logger.info(f"Schema obtido de {table_identifier}: {schema.simpleString()}")
+    def read_csv(cls, spark: SparkSession, s3_path: str, legacy_table: str) -> DataFrame:
+        """Lê CSVs sem cabeçalho usando o schema obtido da tabela legada no catálogo Glue."""
+        schema = spark.sql(f"SELECT * FROM {legacy_table} LIMIT 0").schema
+        logger.info(f"Schema obtido de {legacy_table}: {schema.simpleString()}")
         logger.info(f"Lendo CSV de: {s3_path}")
         return (
             spark.read.format("csv")
@@ -113,9 +124,10 @@ class TrsIngestion:
             return
 
         table_identifier = f"glue_catalog.{iceberg_database}.{tablename}"
+        legacy_table = f"trs.{tablename}_legacy"
         s3_source_path = f"s3://{source_bucket}/{source_prefix}/{tablename}/*.csv"
 
-        df = cls.read_csv(spark, s3_source_path, table_identifier)
+        df = cls.read_csv(spark, s3_source_path, legacy_table)
         df.persist()
 
         record_count = df.count()
@@ -128,6 +140,7 @@ class TrsIngestion:
 
         cls.write_iceberg(df, table_identifier)
         cls.write_hive_orc(df, orc_location)
+        cls.create_success_file(orc_location)
         cls.move_csv_files(source_bucket, source_prefix, dest_bucket, dest_prefix, tablename)
 
         df.unpersist()
